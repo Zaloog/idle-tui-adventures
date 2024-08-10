@@ -4,6 +4,7 @@ from pathlib import Path
 from idle_tui_adventures.database.db_utils import create_connection
 from idle_tui_adventures.constants import DB_FULL_PATH
 
+from textual.widgets import Placeholder
 
 def get_all_characters(database: Path = DB_FULL_PATH) -> list[sqlite3.Row]:
     query_str = """
@@ -60,7 +61,7 @@ def get_stages_for_character(
 
 def get_gamestate_for_character(
     character_id: int, database: Path = DB_FULL_PATH
-) -> sqlite3.Row | None:
+) -> sqlite3.Row:
     query_str = """
     SELECT *
     FROM gamestates
@@ -73,7 +74,6 @@ def get_gamestate_for_character(
             return gamestate
         except sqlite3.Error as e:
             print(e)
-            return None
 
 
 def get_all_items(database: Path = DB_FULL_PATH) -> list[sqlite3.Row]:

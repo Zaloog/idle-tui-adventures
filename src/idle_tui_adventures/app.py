@@ -7,7 +7,7 @@ from idle_tui_adventures.database.db_queries import (
     get_gamestate_for_character,
 )
 from idle_tui_adventures.database.db_transactions import create_initial_gamestate
-from idle_tui_adventures.config import IdleTuiConfig, init_new_config
+from idle_tui_adventures.config import IdleTuiConfig
 from idle_tui_adventures.modes.start_menu.start_screen import StartScreen
 from idle_tui_adventures.modes.main_menu.main_screen import MainScreen
 from idle_tui_adventures.modes.main_menu.inventory_screen import InventoryEquipScreen
@@ -34,10 +34,11 @@ class IdleAdventure(App[None]):
     }
     MODES = {"Start": StartScreen, "Main": MainScreen, "Settings": SettingsScreen}
 
-    def on_mount(self):
-        init_new_config()
-        self.cfg = IdleTuiConfig()
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.cfg: IdleTuiConfig = IdleTuiConfig()
 
+    def on_mount(self):
         self.load_active_character()
 
         # If character is present go to main
