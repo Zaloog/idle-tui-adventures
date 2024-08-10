@@ -106,6 +106,12 @@ class StatDisplayWithoutButton(Digits):
     def set_value(self, int_val):
         self.update(value=str(int_val))
 
+    def increase_value(self, increase):
+        self.update(value=f"{self.int_value+increase}")
+
+    def decrease_value(self, decrease):
+        self.update(value=f"{self.int_value - decrease}")
+
     @property
     def int_value(self) -> int:
         return int(self.value)
@@ -144,7 +150,17 @@ class StatDisplayWithButton(Horizontal):
         super().__init__()
 
     def compose(self) -> Iterable[Widget]:
-        yield Button("-", variant="primary", classes="undo_assign")
+        yield Button(
+            "-",
+            variant="primary",
+            classes="undo_assign",
+            id=f"btn_decrease_{self.stat}",
+        )
         yield StatDisplayWithoutButton(stat=self.stat, value=self.value)
-        yield Button("+", variant="primary", classes="assign_point")
+        yield Button(
+            "+",
+            variant="primary",
+            classes="assign_point",
+            id=f"btn_increase_{self.stat}",
+        )
         return super().compose()

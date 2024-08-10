@@ -3,16 +3,20 @@ from typing import TYPE_CHECKING, Iterable
 if TYPE_CHECKING:
     from idle_tui_adventures.app import IdleAdventure
 
+from textual.events import Mount
 from textual.reactive import reactive
 from textual.widget import Widget
 from textual.widgets import Placeholder, Label, Button
 from textual.containers import Vertical, Horizontal
 
-from idle_tui_adventures.widgets.stat_point_widgets import StatUpdateDisplay
+from idle_tui_adventures.widgets.stat_point_widgets import (
+    StatUpdateDisplay,
+    StatDisplayWithoutButton,
+)
 
 
 class CharacterInterface(Vertical):
-    unassigned_stat_points: reactive[int] = reactive(1)
+    unassigned_stat_points: reactive[int] = reactive(0)
     spend_stat_points: reactive[int] = reactive(0)
 
     app: "IdleAdventure"
@@ -33,9 +37,6 @@ class CharacterInterface(Vertical):
 
     }
 
-    .-hidden {
-        display:none;
-    }
     """
 
     def compose(self) -> Iterable[Widget]:
@@ -45,11 +46,25 @@ class CharacterInterface(Vertical):
         yield ConfirmButtons()
         return super().compose()
 
+    def _on_mount(self, event: Mount) -> None:
+        self.app.character.unassigned_stat_points = 3
+        self.unassigned_stat_points = self.app.character.unassigned_stat_points
+        return super()._on_mount(event)
+
     def on_button_pressed(self, event: Button.Pressed):
         if "assign_point" in event.button.classes:
             self.spend_stat_points += 1
+            self.query_one(
+                f'#stat_{event.button.id.split("_")[-1]}', StatDisplayWithoutButton
+            ).increase_value(1)
         if "undo_assign" in event.button.classes:
             self.spend_stat_points -= 1
+            self.query_one(
+                f'#stat_{event.button.id.split("_")[-1]}', StatDisplayWithoutButton
+            ).decrease_value(1)
+        self.log.error(
+            f"unassigned {self.unassigned_stat_points}, spend {self.spend_stat_points}"
+        )
 
     def watch_spend_stat_points(self):
         if self.spend_stat_points == 0:
@@ -67,14 +82,14 @@ class CharacterInterface(Vertical):
             f"available stat points: {self.unassigned_stat_points - self.spend_stat_points}"
         )
 
-    def watch_unassigned_stat_points(self):
-        if self.unassigned_stat_points == 0:
-            self.query(Button).add_class("-hidden")
-        else:
-            self.query(Button).remove_class("-hidden")
-        self.query_one(Label).update(
-            f"available stat points: {self.unassigned_stat_points}"
-        )
+    # def watch_unassigned_stat_points(self):
+    #     if self.unassigned_stat_points == 0:
+    #         self.query(Button).exclude('.assign_point .undo_assign').set_styles("visibility: hidden;")
+    #     else:
+    #         self.query(Button).exclude('.assign_point .undo_assign').set_styles("visibility: visible;")
+    #     self.query_one(Label).update(
+    #         f"available stat points: {self.unassigned_stat_points}"
+    #     )
 
 
 class ConfirmButtons(Horizontal):
