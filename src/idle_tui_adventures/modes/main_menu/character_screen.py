@@ -1,6 +1,11 @@
-from typing import Iterable
+from typing import Iterable, TYPE_CHECKING
 
-from textual.events import Mount
+if TYPE_CHECKING:
+    from idle_tui_adventures.app import IdleAdventure
+
+
+from textual import on
+from textual.events import Mount, ScreenResume
 from textual.widget import Widget
 from textual.widgets import Placeholder
 from textual.screen import ModalScreen
@@ -10,6 +15,7 @@ from idle_tui_adventures.widgets.character_screen_widgets import CharacterInterf
 
 
 class CharacterScreen(ModalScreen):
+    app: "IdleAdventure"
     name: str = "CharacterScreen"
     BINDINGS = [("escape", "app.pop_screen"), ("c", "app.pop_screen")]
     DEFAULT_CSS = """CharacterScreen {
@@ -38,3 +44,10 @@ class CharacterScreen(ModalScreen):
         self.query_one("#character").add_class("-active")
         self.log.error("set to active")
         return super()._on_mount(event)
+
+    @on(ScreenResume)
+    def get_unspend_points(self):
+        self.app.character.unassigned_stat_points = 3
+        self.query_one(
+            CharacterInterface
+        ).unassigned_stat_points = self.app.character.unassigned_stat_points

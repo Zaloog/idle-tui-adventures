@@ -135,8 +135,6 @@ class StatDisplayWithButton(Horizontal):
             margin:1 1 1 1;
         }
 
-        StatDisplayWithoutButton {
-        }
     }
     """
 
