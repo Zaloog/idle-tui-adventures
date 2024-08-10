@@ -45,8 +45,27 @@ class CharacterInterface(Vertical):
         yield ConfirmButtons()
         return super().compose()
 
-    def on_button_pressed(self):
-        self.unassigned_stat_points -= 1
+    def on_button_pressed(self, event: Button.Pressed):
+        if "assign_point" in event.button.classes:
+            self.spend_stat_points += 1
+        if "undo_assign" in event.button.classes:
+            self.spend_stat_points -= 1
+
+    def watch_spend_stat_points(self):
+        if self.spend_stat_points == 0:
+            self.query(Button).filter(".undo_assign").set_styles("visibility: hidden;")
+        else:
+            self.query(Button).filter(".undo_assign").set_styles("visibility: visible;")
+
+        if self.spend_stat_points == self.unassigned_stat_points:
+            self.query(Button).filter(".assign_point").set_styles("visibility: hidden;")
+        else:
+            self.query(Button).filter(".assign_point").set_styles(
+                "visibility: visible;"
+            )
+        self.query_one(Label).update(
+            f"available stat points: {self.unassigned_stat_points - self.spend_stat_points}"
+        )
 
     def watch_unassigned_stat_points(self):
         if self.unassigned_stat_points == 0:
@@ -60,6 +79,6 @@ class CharacterInterface(Vertical):
 
 class ConfirmButtons(Horizontal):
     def compose(self) -> Iterable[Widget]:
-        yield Button("Cancel")
-        yield Button("Confirm")
+        yield Button("Cancel", id="revert_stats")
+        yield Button("Confirm", id="confirm_stats")
         return super().compose()

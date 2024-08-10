@@ -144,7 +144,7 @@ class StatDisplayWithButton(Horizontal):
         super().__init__()
 
     def compose(self) -> Iterable[Widget]:
-        yield Button("-", variant="primary")
+        yield Button("-", variant="primary", classes="undo_assign")
         yield StatDisplayWithoutButton(stat=self.stat, value=self.value)
-        yield Button("+", variant="primary")
+        yield Button("+", variant="primary", classes="assign_point")
         return super().compose()
