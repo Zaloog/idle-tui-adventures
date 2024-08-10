@@ -77,7 +77,7 @@ class StatUpdateDisplay(Vertical):
     }
     """
 
-    def __init__(self, current_stat_dict) -> None:  #: dict[STATS_LITERAL, int]
+    def __init__(self, current_stat_dict: dict[STATS_LITERAL, int]) -> None:  #
         self.current_stat_dict = current_stat_dict
         super().__init__()
 
