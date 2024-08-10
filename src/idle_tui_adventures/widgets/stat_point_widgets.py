@@ -68,10 +68,11 @@ class StartStatRandomizer(Vertical):
 class StatUpdateDisplay(Vertical):
     DEFAULT_CSS = """
     StatDisplay {
-        align: center middle;
         layout:grid;
-        grid-size: 3 4;
+        grid-size: 1 4;
+        grid-rows: 1fr;
         width: 1fr;
+        align: center middle;
     }
     """
 
@@ -121,20 +122,20 @@ class StatDisplayWithoutButton(Digits):
 class StatDisplayWithButton(Horizontal):
     DEFAULT_CSS = """ StatDisplayWithButton {
         layout: grid;
-        grid-size: 3 2;
-        grid-rows: 1fr;
-        grid-columns: 1fr;
-        column-span: 3;
+        grid-size: 3 1;
+        grid-gutter:0 2;
+        grid-columns: 1fr 2fr 1fr;
+        height:1fr;
+        align: center middle;
+        content-align: center middle;
 
-        & Button {
-            column-span:1;
-            row-span: 2;
-            width:1fr;
+        Button {
+            height: 1fr;
+            width: 1fr;
+            margin:1 1 1 1;
         }
 
-        & StatDisplayWithoutButton {
-            column-span:1;
-            width:1fr;
+        StatDisplayWithoutButton {
         }
     }
     """
@@ -145,7 +146,7 @@ class StatDisplayWithButton(Horizontal):
         super().__init__()
 
     def compose(self) -> Iterable[Widget]:
-        yield Button("-", variant="error")
+        yield Button("-", variant="primary")
         yield StatDisplayWithoutButton(stat=self.stat, value=self.value)
-        yield Button("+", variant="error")
+        yield Button("+", variant="primary")
         return super().compose()

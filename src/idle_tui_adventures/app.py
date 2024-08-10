@@ -54,7 +54,6 @@ class IdleAdventure(App[None]):
             info_txt += f'Profession:\t[blue]{db_entry['profession']}[/]'
             self.notify(title="Character Active", message=info_txt, timeout=2)
             self.character = Character(**db_entry)
-            self.log.error(f"{self.character}")
 
             self.load_game_state()
         else:

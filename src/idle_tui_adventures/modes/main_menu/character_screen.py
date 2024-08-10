@@ -6,6 +6,7 @@ from textual.widgets import Placeholder
 from textual.screen import ModalScreen
 
 from idle_tui_adventures.widgets.icon_widgets import MenuIconsRow
+from idle_tui_adventures.widgets.character_screen_widgets import CharacterInterface
 
 
 class CharacterScreen(ModalScreen):
@@ -22,10 +23,13 @@ class CharacterScreen(ModalScreen):
     Placeholder {
         row-span: 3;
     }
+    CharacterInterface {
+        row-span: 3;
+    }
     """
 
     def compose(self) -> Iterable[Widget]:
-        yield Placeholder("Stats")
+        yield CharacterInterface()
         yield Placeholder("Equipment")
         yield MenuIconsRow()
         return super().compose()
