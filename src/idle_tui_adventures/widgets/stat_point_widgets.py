@@ -1,13 +1,14 @@
 from __future__ import annotations
 
-from typing_extensions import Iterable
+from typing import Iterable
 
 from textual import on
+from textual.reactive import reactive
 from textual.widget import Widget
 from textual.widgets import Digits, Button
 from textual.containers import Horizontal, Vertical
 
-from idle_tui_adventures.constants import STATS_LITERAL, STATS
+from idle_tui_adventures.constants import STATS_LITERAL, STATS, PROFESSION_MAINSTAT_DICT
 from idle_tui_adventures.utils import get_random_amount_start_stats
 
 
@@ -76,9 +77,13 @@ class StatUpdateDisplay(Vertical):
     }
     """
 
+    def __init__(self, current_stat_dict) -> None:  #: dict[STATS_LITERAL, int]
+        self.current_stat_dict = current_stat_dict
+        super().__init__()
+
     def compose(self) -> Iterable[Widget]:
-        for stat in STATS:
-            yield StatDisplayWithButton(stat=stat, value=0)
+        for stat, value in self.current_stat_dict.items():
+            yield StatChanger(stat=stat, current_value=value)
         return super().compose()
 
 
@@ -125,7 +130,7 @@ class StatDisplayWithoutButton(Digits):
         self.styles.border_subtitle_color = None
 
 
-class StatDisplayWithButton(Horizontal):
+class StatChanger(Horizontal):
     DEFAULT_CSS = """ StatDisplayWithButton {
         layout: grid;
         grid-size: 3 1;
@@ -141,12 +146,13 @@ class StatDisplayWithButton(Horizontal):
             margin:1 1 1 1;
         }
 
+
     }
     """
 
-    def __init__(self, stat: STATS_LITERAL, value: int):
+    def __init__(self, stat: STATS_LITERAL, current_value: int):
         self.stat = stat
-        self.value = value
+        self.value = current_value
         super().__init__()
 
     def compose(self) -> Iterable[Widget]:
@@ -156,7 +162,7 @@ class StatDisplayWithButton(Horizontal):
             classes="undo_assign",
             id=f"btn_decrease_{self.stat}",
         )
-        yield StatDisplayWithoutButton(stat=self.stat, value=self.value)
+        yield StatDisplayWithChange(stat=self.stat, value=self.value)
         yield Button(
             "+",
             variant="primary",
@@ -164,3 +170,66 @@ class StatDisplayWithButton(Horizontal):
             id=f"btn_increase_{self.stat}",
         )
         return super().compose()
+
+    def on_button_pressed(self, event: Button.Pressed):
+        if "increase" in event.button.id:
+            self.query_one(StatDisplayWithChange).change_value += 1
+        if "decrease" in event.button.id:
+            self.query_one(StatDisplayWithChange).change_value -= 1
+
+
+class StatDisplayWithChange(Horizontal):
+    change_value: reactive[int] = reactive(0, init=False)
+
+    DEFAULT_CSS = """ StatDisplayWithChange {
+        border: solid brown;
+        width:1fr;
+        height:auto;
+        content-align:center middle;
+
+        & Digits {
+            text-align:center;
+            content-align:center middle;
+        }
+        .change {
+            color:green;
+        }
+        .hidden {
+            display:none;
+        }
+    }
+    """
+
+    def __init__(self, stat: STATS_LITERAL, value: int):
+        self.stat = stat
+        self.value = value
+        super().__init__()
+
+    def compose(self) -> Iterable[Widget]:
+        self.border_title = self.stat
+        self.styles.border_title_color = "red"
+
+        yield Digits(value=f"{self.value}", id=f"stat_{self.stat}")
+        yield Digits(
+            value=f"{self.change_value}",
+            id=f"stat_change_{self.stat}",
+            classes="change hidden",
+        )
+
+        if PROFESSION_MAINSTAT_DICT[self.app.character.profession] == self.stat:
+            self.highlight_main_stat()
+        return super().compose()
+
+    def highlight_main_stat(self):
+        self.border_subtitle = "Main Attribute"
+        self.styles.border_subtitle_color = "yellow"
+
+    def watch_change_value(self):
+        if self.change_value == 0:
+            self.query_one(f"#stat_change_{self.stat}", Digits).add_class("hidden")
+
+        elif self.change_value > 0:
+            self.query_one(f"#stat_change_{self.stat}", Digits).remove_class("hidden")
+            self.query_one(f"#stat_change_{self.stat}", Digits).update(
+                f"+{self.change_value}"
+            )

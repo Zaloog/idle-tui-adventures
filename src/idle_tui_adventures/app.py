@@ -18,7 +18,7 @@ from idle_tui_adventures.modes.settings_menu.settings_screen import SettingsScre
 
 
 class IdleAdventure(App[None]):
-    character: Character  # | None
+    character: Character
     gamestate: GameState  # | None
 
     BINDINGS = [
@@ -36,7 +36,7 @@ class IdleAdventure(App[None]):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.cfg: IdleTuiConfig = IdleTuiConfig()
+        self.cfg = IdleTuiConfig()
 
     def on_mount(self):
         self.load_active_character()
