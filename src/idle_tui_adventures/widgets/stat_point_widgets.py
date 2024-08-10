@@ -3,6 +3,7 @@ from __future__ import annotations
 from typing import Iterable
 
 from textual import on
+from textual.message import Message
 from textual.reactive import reactive
 from textual.widget import Widget
 from textual.widgets import Digits, Button
@@ -66,27 +67,6 @@ class StartStatRandomizer(Vertical):
         return self.query_one("#stat_luck")
 
 
-class StatUpdateDisplay(Vertical):
-    DEFAULT_CSS = """
-    StatDisplay {
-        layout:grid;
-        grid-size: 1 4;
-        grid-rows: 1fr;
-        width: 1fr;
-        align: center middle;
-    }
-    """
-
-    def __init__(self, current_stat_dict: dict[STATS_LITERAL, int]) -> None:  #
-        self.current_stat_dict = current_stat_dict
-        super().__init__()
-
-    def compose(self) -> Iterable[Widget]:
-        for stat, value in self.current_stat_dict.items():
-            yield StatChanger(stat=stat, current_value=value)
-        return super().compose()
-
-
 class StatDisplayWithoutButton(Digits):
     DEFAULT_CSS = """ StatDisplayWithoutButton {
         border: solid brown;
@@ -130,8 +110,30 @@ class StatDisplayWithoutButton(Digits):
         self.styles.border_subtitle_color = None
 
 
+class StatUpdateDisplay(Vertical):
+    DEFAULT_CSS = """
+    StatDisplay {
+        layout:grid;
+        grid-size: 1 4;
+        grid-rows: 1fr;
+        width: 1fr;
+        align: center middle;
+    }
+    """
+
+    def __init__(self, current_stat_dict) -> None:  #: dict[STATS_LITERAL, int]
+        self.current_stat_dict = current_stat_dict
+        super().__init__()
+
+    def compose(self) -> Iterable[Widget]:
+        for stat, value in self.current_stat_dict.items():
+            yield StatChanger(stat=stat, current_value=value)
+        return super().compose()
+
+
 class StatChanger(Horizontal):
-    DEFAULT_CSS = """ StatDisplayWithButton {
+    DEFAULT_CSS = """
+    StatDisplayWithButton {
         layout: grid;
         grid-size: 3 1;
         grid-gutter:0 2;
@@ -150,6 +152,24 @@ class StatChanger(Horizontal):
     }
     """
 
+    class SpentPoint(Message):
+        def __init__(self, statchanger: StatChanger):
+            self.statchanger = statchanger
+            super().__init__()
+
+        @property
+        def control(self) -> StatChanger:
+            return self.statchanger
+
+    class UnspentPoint(Message):
+        def __init__(self, statchanger: StatChanger):
+            self.statchanger = statchanger
+            super().__init__()
+
+        @property
+        def control(self) -> StatChanger:
+            return self.statchanger
+
     def __init__(self, stat: STATS_LITERAL, current_value: int):
         self.stat = stat
         self.value = current_value
@@ -159,7 +179,7 @@ class StatChanger(Horizontal):
         yield Button(
             "-",
             variant="primary",
-            classes="undo_assign",
+            classes="unassign_point",
             id=f"btn_decrease_{self.stat}",
         )
         yield StatDisplayWithChange(stat=self.stat, value=self.value)
@@ -174,8 +194,12 @@ class StatChanger(Horizontal):
     def on_button_pressed(self, event: Button.Pressed):
         if "increase" in event.button.id:
             self.query_one(StatDisplayWithChange).change_value += 1
-        if "decrease" in event.button.id:
+            self.post_message(self.SpentPoint(self))
+        if ("decrease" in event.button.id) and (
+            self.query_one(StatDisplayWithChange).change_value > 0
+        ):
             self.query_one(StatDisplayWithChange).change_value -= 1
+            self.post_message(self.UnspentPoint(self))
 
 
 class StatDisplayWithChange(Horizontal):
