@@ -33,7 +33,7 @@ dev-dependencies = [
 ]
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
-addopts = "--cov idle_tui_adventures --cov-report term-missing -n 4 --dist=loadgroup"
+addopts = "--cov src/idle_tui_adventures --cov-report term-missing --verbose -n 4 --dist=loadgroup"
 testpaths = ["tests"]
 
 [tool.hatch.metadata]

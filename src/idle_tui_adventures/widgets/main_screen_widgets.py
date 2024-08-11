@@ -61,7 +61,7 @@ class CharacterProgressbar(ProgressBar):
 
     def _on_compose(self, event: Compose) -> Coroutine[Any, Any, None]:
         self.timer = self.set_interval(
-            1, self.make_progress, pause=True, name="ProgressbarTimer"
+            1, self.make_progress, pause=False, name="ProgressbarTimer"
         )
         return super()._on_compose(event)
 
