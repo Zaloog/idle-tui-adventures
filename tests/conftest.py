@@ -15,7 +15,7 @@ def test_config_file_path(test_config_path):
 
 
 @pytest.fixture
-def test_config(test_config_file_path) -> IdleTuiConfig:
+def test_app_config(test_config_file_path) -> IdleTuiConfig:
     init_new_config(conf_path=test_config_file_path)
 
     cfg = IdleTuiConfig(config_path=test_config_file_path)

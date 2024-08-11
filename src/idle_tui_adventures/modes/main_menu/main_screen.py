@@ -4,7 +4,6 @@ if TYPE_CHECKING:
     from idle_tui_adventures.app import IdleAdventure
 
 from textual import on
-from textual.events import ScreenResume, ScreenSuspend
 from textual.widget import Widget
 from textual.widgets import Placeholder
 from textual.screen import Screen
@@ -16,7 +15,6 @@ from idle_tui_adventures.widgets.main_screen_widgets import (
 )
 from idle_tui_adventures.widgets.icon_widgets import MenuIconsRow
 from idle_tui_adventures.database.db_transactions import update_monsters_killed_db
-from idle_tui_adventures.utils import calculate_exp_needed
 
 
 class MainScreen(Screen):
@@ -45,25 +43,25 @@ class MainScreen(Screen):
 
         return super().compose()
 
-    @on(ScreenSuspend)
-    def pause_progress(self):
-        p_bar = self.query_one(CharacterProgressbar)
-        p_bar.timer.pause()
-        monster = self.query_one(MonsterPanel)
-        monster.timer.pause()
+    # @on(ScreenSuspend)
+    # def pause_progress(self):
+    #     p_bar = self.query_one(CharacterProgressbar)
+    #     p_bar.timer.pause()
+    #     monster = self.query_one(MonsterPanel)
+    #     monster.timer.pause()
 
-    @on(ScreenResume)
-    def recalibrate_progressbar(self):
-        if self.app.character:
-            new_total = calculate_exp_needed(next_lvl=self.app.character.level + 1)
-            last_total = calculate_exp_needed(next_lvl=self.app.character.level)
-            current_exp = self.app.character.experience - last_total
+    # @on(ScreenResume)
+    # def recalibrate_progressbar(self):
+    #     if self.app.character:
+    #         new_total = calculate_exp_needed(next_lvl=self.app.character.level + 1)
+    #         last_total = calculate_exp_needed(next_lvl=self.app.character.level)
+    #         current_exp = self.app.character.experience - last_total
 
-            p_bar = self.query_one(CharacterProgressbar)
-            p_bar.update(progress=current_exp, total=new_total - last_total)
-            p_bar.timer.resume()
-            monster = self.query_one(MonsterPanel)
-            monster.timer.resume()
+    #         p_bar = self.query_one(CharacterProgressbar)
+    #         p_bar.update(progress=current_exp, total=new_total - last_total)
+    #         p_bar.timer.resume()
+    #         monster = self.query_one(MonsterPanel)
+    #         monster.timer.resume()
 
     @on(MonsterPanel.MonsterDefeated)
     def advance_stage(self):
