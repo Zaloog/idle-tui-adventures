@@ -204,6 +204,7 @@ class StatChanger(Horizontal):
 
 class StatDisplayWithChange(Horizontal):
     change_value: reactive[int] = reactive(0, init=False)
+    added_value: reactive[int] = reactive(0, init=False)
 
     DEFAULT_CSS = """ StatDisplayWithChange {
         border: solid brown;
@@ -227,7 +228,7 @@ class StatDisplayWithChange(Horizontal):
     def __init__(self, stat: STATS_LITERAL, value: int):
         self.stat = stat
         self.value = value
-        super().__init__()
+        super().__init__(id=f"stat_display_{self.stat}")
 
     def compose(self) -> Iterable[Widget]:
         self.border_title = self.stat
@@ -257,3 +258,8 @@ class StatDisplayWithChange(Horizontal):
             self.query_one(f"#stat_change_{self.stat}", Digits).update(
                 f"+{self.change_value}"
             )
+
+    def watch_added_value(self):
+        self.value += self.added_value
+        self.added_value = 0
+        self.query_one(f"#stat_{self.stat}", Digits).update(f"{self.value}")

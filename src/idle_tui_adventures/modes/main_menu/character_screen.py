@@ -46,8 +46,11 @@ class CharacterScreen(ModalScreen):
         return super()._on_mount(event)
 
     @on(ScreenResume)
-    def get_unspend_points(self):
-        self.app.character.unassigned_stat_points = 3
+    def update_character_interface(self):
         self.query_one(
             CharacterInterface
         ).unassigned_stat_points = self.app.character.unassigned_stat_points
+
+        # self.query_one(
+        #     CharacterInterface
+        # ).refresh(recompose=True)

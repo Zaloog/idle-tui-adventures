@@ -164,6 +164,56 @@ def update_level_db(
             return e.sqlite_errorname
 
 
+def gain_unassigned_stats_db(
+    character_id: int, unassigned_stats: int, database: Path = DB_FULL_PATH
+) -> int | str:
+    gain_stat_dict = {
+        "character_id": character_id,
+        "unassigned_stat_points": unassigned_stats,
+    }
+    transaction_str = """
+    UPDATE characters
+    SET unassigned_stat_points = unassigned_stat_points + :unassigned_stat_points
+    WHERE character_id = :character_id
+    """
+    with create_connection(database=database) as con:
+        con.row_factory = sqlite3.Row
+        try:
+            con.execute(transaction_str, gain_stat_dict)
+            return 0
+        except sqlite3.Error as e:
+            print(e.sqlite_errorname)
+            return e.sqlite_errorname
+
+
+def alocate_new_stats_db(
+    character_id: int, change_stat_dict: dict, database: Path = DB_FULL_PATH
+) -> int | str:
+    used_stat_points = sum(change_stat_dict.values())
+    alocate_stat_dict = {
+        "character_id": character_id,
+        "used_points": used_stat_points,
+    } | change_stat_dict
+    transaction_str = """
+    UPDATE characters
+    SET
+        strength = strength + :strength,
+        intelligence = intelligence + :intelligence,
+        dexterity = dexterity + :dexterity,
+        luck = luck + :luck,
+        unassigned_stat_points = unassigned_stat_points - :used_points
+    WHERE character_id = :character_id
+    """
+    with create_connection(database=database) as con:
+        con.row_factory = sqlite3.Row
+        try:
+            con.execute(transaction_str, alocate_stat_dict)
+            return 0
+        except sqlite3.Error as e:
+            print(e.sqlite_errorname)
+            return e.sqlite_errorname
+
+
 def update_monsters_killed_db(
     gamestate_id: int, database: Path = DB_FULL_PATH
 ) -> int | str:

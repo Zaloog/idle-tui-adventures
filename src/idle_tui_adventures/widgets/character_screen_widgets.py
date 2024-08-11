@@ -12,13 +12,14 @@ from textual.containers import Vertical, Horizontal
 
 from idle_tui_adventures.widgets.stat_point_widgets import (
     StatUpdateDisplay,
+    StatDisplayWithChange,
     StatChanger,
 )
 
 
 class CharacterInterface(Vertical):
-    unassigned_stat_points: reactive[int] = reactive(0)
-    spent_stat_points: reactive[int] = reactive(0)
+    unassigned_stat_points: reactive[int] = reactive(0, init=False, always_update=True)
+    spent_stat_points: reactive[int] = reactive(0, init=False)
     spent_stat_dict: reactive[dict] = reactive(
         {
             "strength": 0,
@@ -66,15 +67,33 @@ class CharacterInterface(Vertical):
         return super().compose()
 
     def _on_mount(self, event: Mount) -> None:
-        self.app.character.unassigned_stat_points = 3
         self.unassigned_stat_points = self.app.character.unassigned_stat_points
 
         return super()._on_mount(event)
+
+    def watch_unassigned_stat_points(self):
+        self.query_one(Label).update(
+            f"points to spend: {self.unassigned_stat_points - self.spent_stat_points}"
+        )
+        if self.unassigned_stat_points > 0:
+            self.query(Button).exclude(
+                ".unassign_point,#confirm_stats,#revert_stats"
+            ).set_styles("visibility: visible;")
+        else:
+            self.query(Button).set_styles("visibility: hidden;")
 
     def watch_spent_stat_points(self):
         self.query_one(Label).update(
             f"points to spend: {self.unassigned_stat_points - self.spent_stat_points}"
         )
+        if self.spent_stat_points > 0:
+            self.query(Button).filter("#confirm_stats,#revert_stats").set_styles(
+                "visibility: visible;"
+            )
+        else:
+            self.query(Button).filter("#confirm_stats,#revert_stats").set_styles(
+                "visibility: hidden;"
+            )
 
     @on(StatChanger.SpentPoint)
     def spent_point(self, event: StatChanger.SpentPoint):
@@ -89,9 +108,6 @@ class CharacterInterface(Vertical):
         self.mutate_reactive(CharacterInterface.spent_stat_dict)
 
     def watch_spent_stat_dict(self):
-        self.log.error(self.spent_stat_dict)
-        self.log.error(sum(self.spent_stat_dict.values()))
-
         if sum(self.spent_stat_dict.values()) == self.unassigned_stat_points:
             self.query(Button).filter(".assign_point").set_styles("visibility: hidden;")
         else:
@@ -109,36 +125,30 @@ class CharacterInterface(Vertical):
                     "visibility: visible;"
                 )
 
-    # def on_button_pressed(self, event: Button.Pressed):
-    #     if "assign_point" in event.button.classes:
-    #         self.spend_stat_points += 1
-    #         self.query_one(
-    #             f'#stat_{event.button.id.split("_")[-1]}', StatDisplayWithoutButton
-    #         ).increase_value(1)
-    #     if "undo_assign" in event.button.classes:
-    #         self.spend_stat_points -= 1
-    #         self.query_one(
-    #             f'#stat_{event.button.id.split("_")[-1]}', StatDisplayWithoutButton
-    #         ).decrease_value(1)
-    #     self.log.error(
-    #         f"unassigned {self.unassigned_stat_points}, spend {self.spend_stat_points}"
-    #     )
+    @on(Button.Pressed, "#confirm_stats")
+    def confirm_stat_selection(self):
+        for stat in self.current_stat_dict:
+            self.current_stat_dict[stat] += self.spent_stat_dict[stat]
+            self.query_one(
+                f"#stat_display_{stat}", StatDisplayWithChange
+            ).change_value = 0
+            self.query_one(
+                f"#stat_display_{stat}", StatDisplayWithChange
+            ).added_value += self.spent_stat_dict[stat]
 
-    # def watch_spend_stat_points(self):
-    #     if self.spend_stat_points == 0:
-    #         self.query(Button).filter(".undo_assign").set_styles("visibility: hidden;")
-    #     else:
-    #         self.query(Button).filter(".undo_assign").set_styles("visibility: visible;")
+        self.unassigned_stat_points -= self.spent_stat_points
+        self.spent_stat_points = 0
+        self.app.character.update_stats(change_stat_dict=self.spent_stat_dict)
+        self.spent_stat_dict = {stat: 0 for stat in self.spent_stat_dict}
+        self.mutate_reactive(CharacterInterface.spent_stat_dict)
 
-    #     if self.spend_stat_points == self.unassigned_stat_points:
-    #         self.query(Button).filter(".assign_point").set_styles("visibility: hidden;")
-    #     else:
-    #         self.query(Button).filter(".assign_point").set_styles(
-    #             "visibility: visible;"
-    #         )
-    #     self.query_one(Label).update(
-    #         f"available stat points: {self.unassigned_stat_points - self.spend_stat_points}"
-    #     )
+    @on(Button.Pressed, "#revert_stats")
+    def revert_stat_selection(self):
+        self.spent_stat_dict = {stat: 0 for stat in self.spent_stat_dict}
+        self.spent_stat_points = 0
+        for stat_display in self.query(StatDisplayWithChange):
+            stat_display.change_value = 0
+        self.mutate_reactive(CharacterInterface.spent_stat_dict)
 
 
 class ConfirmButtons(Horizontal):
