@@ -43,25 +43,8 @@ class MainScreen(Screen):
 
         return super().compose()
 
-    # @on(ScreenSuspend)
-    # def pause_progress(self):
-    #     p_bar = self.query_one(CharacterProgressbar)
-    #     p_bar.timer.pause()
-    #     monster = self.query_one(MonsterPanel)
-    #     monster.timer.pause()
-
-    # @on(ScreenResume)
-    # def recalibrate_progressbar(self):
-    #     if self.app.character:
-    #         new_total = calculate_exp_needed(next_lvl=self.app.character.level + 1)
-    #         last_total = calculate_exp_needed(next_lvl=self.app.character.level)
-    #         current_exp = self.app.character.experience - last_total
-
-    #         p_bar = self.query_one(CharacterProgressbar)
-    #         p_bar.update(progress=current_exp, total=new_total - last_total)
-    #         p_bar.timer.resume()
-    #         monster = self.query_one(MonsterPanel)
-    #         monster.timer.resume()
+    # def key_space(self):
+    #     self.query_one(MonsterPanel).auto_attack()
 
     @on(MonsterPanel.MonsterDefeated)
     def advance_stage(self):

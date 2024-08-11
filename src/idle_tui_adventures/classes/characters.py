@@ -28,9 +28,9 @@ class Character:
         self.equipped_items = self.get_equipped_items()
         self.inventory_items = self.get_inventory_items()
         # Calculate Stats
-        self.attack_speed = 1.00
-        self.crit_rate = 0.20
-        self.damage = 500
+        self.attack_speed = 2.00
+        self.crit_rate = 0.40
+        self.damage = 100
 
     def level_up(self):
         self.level += 1

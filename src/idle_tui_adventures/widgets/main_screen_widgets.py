@@ -61,7 +61,7 @@ class CharacterProgressbar(ProgressBar):
 
     def _on_compose(self, event: Compose) -> Coroutine[Any, Any, None]:
         self.timer = self.set_interval(
-            1, self.make_progress, pause=False, name="ProgressbarTimer"
+            1, self.make_progress, pause=True, name="ProgressbarTimer"
         )
         return super()._on_compose(event)
 
@@ -179,10 +179,14 @@ class MonsterPanel(Vertical):
 
         return super().compose()
 
+    # def auto_attack(self):
+    #     self.timer.resume()
+
     def _on_compose(self, event: Compose) -> Coroutine[Any, Any, None]:
         self.timer = self.set_interval(
             interval=1 / self.app.character.attack_speed,
             callback=self.fight_monster,
+            # pause=True
         )
 
         return super()._on_compose(event)

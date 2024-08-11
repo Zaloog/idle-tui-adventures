@@ -1,134 +1,130 @@
 import pytest
 
-from idle_tui_adventures.app import IdleAdventure
-
 SCREEN_SIZE = (80, 120)
 
 
 @pytest.mark.asyncio
-async def test_mode_switches():
-    app = IdleAdventure()
-
-    async with app.run_test(size=SCREEN_SIZE) as pilot:
+async def test_mode_switches(TestApp):
+    async with TestApp.run_test(size=SCREEN_SIZE) as pilot:
         await pilot.press("1")
-        assert app.screen.name == "StartScreen"
+        assert TestApp.screen.name == "StartScreen"
 
         await pilot.press("2")
-        assert app.screen.name == "MainScreen"
+        assert TestApp.screen.name == "MainScreen"
 
         await pilot.press("3")
-        assert app.screen.name == "SettingsScreen"
+        assert TestApp.screen.name == "SettingsScreen"
 
 
 @pytest.mark.asyncio
-async def test_start_screen_buttons():
-    app = IdleAdventure()
-
-    async with app.run_test(size=SCREEN_SIZE) as pilot:
+async def test_start_screen_buttons(TestApp):
+    async with TestApp.run_test(size=SCREEN_SIZE) as pilot:
         await pilot.press("1")
         await pilot.click("#btn_move_to_character_creation")
-        assert app.screen.name == "CharacterCreation"
+        assert TestApp.screen.name == "CharacterCreation"
 
         await pilot.press("escape")
-        assert app.screen.name == "StartScreen"
+        assert TestApp.screen.name == "StartScreen"
 
         await pilot.click("#btn_move_to_load_character")
-        assert app.screen.name == "CharacterSelection"
+        assert TestApp.screen.name == "CharacterSelection"
 
         await pilot.press("escape")
-        assert app.screen.name == "StartScreen"
+        assert TestApp.screen.name == "StartScreen"
 
 
 @pytest.mark.asyncio
-async def test_move_to_character_screen():
-    app = IdleAdventure()
-
-    async with app.run_test(size=SCREEN_SIZE) as pilot:
+async def test_move_to_character_screen(TestApp):
+    async with TestApp.run_test(size=SCREEN_SIZE) as pilot:
         await pilot.press("2")
 
+        # From main
         await pilot.press("c")
-        assert app.screen.name == "CharacterScreen"
+        assert TestApp.screen.name == "CharacterScreen"
+        # Close
         await pilot.click("#character")
-        assert app.screen.name == "MainScreen"
+        assert TestApp.screen.name == "MainScreen"
         await pilot.click("#character")
-        assert app.screen.name == "CharacterScreen"
+        assert TestApp.screen.name == "CharacterScreen"
         await pilot.press("l")
-        assert app.screen.name == "ShopScreen"
+        assert TestApp.screen.name == "ShopScreen"
+        # From other
         await pilot.press("c")
-        assert app.screen.name == "CharacterScreen"
+        assert TestApp.screen.name == "CharacterScreen"
 
 
 @pytest.mark.asyncio
-async def test_move_to_backpack_screen():
-    app = IdleAdventure()
-
-    async with app.run_test(size=SCREEN_SIZE) as pilot:
+async def test_move_to_backpack_screen(TestApp):
+    async with TestApp.run_test(size=SCREEN_SIZE) as pilot:
         await pilot.press("2")
 
+        # from Main
         await pilot.click("#backpack")
-        assert app.screen.name == "InventoryEquipScreen"
+        assert TestApp.screen.name == "InventoryEquipScreen"
+        # close
         await pilot.press("b")
-        assert app.screen.name == "MainScreen"
+        assert TestApp.screen.name == "MainScreen"
         await pilot.click("#backpack")
-        assert app.screen.name == "InventoryEquipScreen"
+        assert TestApp.screen.name == "InventoryEquipScreen"
         await pilot.press("c")
-        assert app.screen.name == "CharacterScreen"
+        assert TestApp.screen.name == "CharacterScreen"
+        # From other
         await pilot.click("#backpack")
-        assert app.screen.name == "InventoryEquipScreen"
+        assert TestApp.screen.name == "InventoryEquipScreen"
 
 
 @pytest.mark.asyncio
-async def test_move_to_dungeon_screen():
-    app = IdleAdventure()
-
-    async with app.run_test(size=SCREEN_SIZE) as pilot:
+async def test_move_to_dungeon_screen(TestApp):
+    async with TestApp.run_test(size=SCREEN_SIZE) as pilot:
         await pilot.press("2")
 
+        # from Main
         await pilot.press("d")
-        assert app.screen.name == "DungeonScreen"
+        assert TestApp.screen.name == "DungeonScreen"
         await pilot.click("#shop")
-        assert app.screen.name == "ShopScreen"
+        assert TestApp.screen.name == "ShopScreen"
+        # from other
         await pilot.press("d")
-        assert app.screen.name == "DungeonScreen"
+        assert TestApp.screen.name == "DungeonScreen"
+        # close
         await pilot.click("#dungeon")
-        assert app.screen.name == "MainScreen"
+        assert TestApp.screen.name == "MainScreen"
         await pilot.click("#dungeon")
-        assert app.screen.name == "DungeonScreen"
+        assert TestApp.screen.name == "DungeonScreen"
 
 
 @pytest.mark.asyncio
-async def test_move_to_shop_screen():
-    app = IdleAdventure()
-
-    async with app.run_test(size=SCREEN_SIZE) as pilot:
+async def test_move_to_shop_screen(TestApp):
+    async with TestApp.run_test(size=SCREEN_SIZE) as pilot:
         await pilot.press("2")
 
+        # from main
         await pilot.click("#shop")
-        assert app.screen.name == "ShopScreen"
+        assert TestApp.screen.name == "ShopScreen"
         await pilot.press("c")
-        assert app.screen.name == "CharacterScreen"
+        assert TestApp.screen.name == "CharacterScreen"
         await pilot.click("#dungeon")
-        assert app.screen.name == "DungeonScreen"
+        assert TestApp.screen.name == "DungeonScreen"
+        # from other
         await pilot.press("l")
-        assert app.screen.name == "ShopScreen"
+        assert TestApp.screen.name == "ShopScreen"
+        # close
         await pilot.press("l")
-        assert app.screen.name == "MainScreen"
+        assert TestApp.screen.name == "MainScreen"
 
 
 @pytest.mark.asyncio
-async def test_move_to_settings():
-    app = IdleAdventure()
-
-    async with app.run_test(size=SCREEN_SIZE) as pilot:
+async def test_move_to_settings(TestApp):
+    async with TestApp.run_test(size=SCREEN_SIZE) as pilot:
         await pilot.press("2")
 
         await pilot.press("b")
-        assert app.screen.name == "InventoryEquipScreen"
+        assert TestApp.screen.name == "InventoryEquipScreen"
         await pilot.click("#settings")
-        assert app.screen.name == "SettingsScreen"
+        assert TestApp.screen.name == "SettingsScreen"
         await pilot.press("2")
-        assert app.screen.name == "InventoryEquipScreen"
+        assert TestApp.screen.name == "InventoryEquipScreen"
         await pilot.click("#backpack")
-        assert app.screen.name == "MainScreen"
+        assert TestApp.screen.name == "MainScreen"
         await pilot.press("3")
-        assert app.screen.name == "SettingsScreen"
+        assert TestApp.screen.name == "SettingsScreen"
