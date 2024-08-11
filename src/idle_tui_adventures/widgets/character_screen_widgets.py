@@ -19,14 +19,17 @@ from idle_tui_adventures.widgets.stat_point_widgets import (
 
 class CharacterInterface(Vertical):
     unassigned_stat_points: reactive[int] = reactive(0, init=False, always_update=True)
-    spent_stat_points: reactive[int] = reactive(0, init=False)
+    spent_stat_points: reactive[int] = reactive(
+        0,
+    )
     spent_stat_dict: reactive[dict] = reactive(
         {
             "strength": 0,
             "intelligence": 0,
             "dexterity": 0,
             "luck": 0,
-        }
+        },
+        always_update=True,
     )
 
     app: "IdleAdventure"

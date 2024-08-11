@@ -50,7 +50,9 @@ class CharacterScreen(ModalScreen):
         self.query_one(
             CharacterInterface
         ).unassigned_stat_points = self.app.character.unassigned_stat_points
-
-        # self.query_one(
-        #     CharacterInterface
-        # ).refresh(recompose=True)
+        self.query_one(CharacterInterface).spent_stat_dict = {
+            stat: 0 for stat in self.query_one(CharacterInterface).spent_stat_dict
+        }
+        self.query_one(CharacterInterface).mutate_reactive(
+            CharacterInterface.spent_stat_dict
+        )

@@ -17,6 +17,8 @@ from idle_tui_adventures.database.db_queries import (
     get_stages_for_character,
 )
 from idle_tui_adventures.widgets.icon_widgets import CharacterPreview
+from idle_tui_adventures.modes.main_menu.main_screen import MainScreen
+from idle_tui_adventures.modes.main_menu.character_screen import CharacterScreen
 
 
 class CharacterSelection(ModalScreen):
@@ -91,3 +93,10 @@ class CharacterSelection(ModalScreen):
         self.query(CharacterPreview).exclude(
             f"#{event.character_preview.id}"
         ).remove_class("-active")
+
+        # reload all screens on Character Switch
+        self.app.remove_mode("Main")
+        self.app.add_mode(mode="Main", base_screen=MainScreen)
+
+        self.app.uninstall_screen("CharacterScreen")
+        self.app.install_screen(screen=CharacterScreen, name="CharacterScreen")

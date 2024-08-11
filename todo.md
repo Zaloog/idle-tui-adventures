@@ -9,9 +9,8 @@
         - Inventory
             - query function
         - Stats
-            - Base Str, Int, Dex, Luc
-            - Total Str, Int, Dex, Luc
             - Calculated
+                - Total Str, Int, Dex, Luc
                 - Crit Rate
                 - Crit Damage
                 - Chance item find
@@ -52,8 +51,7 @@
         - Buy/Sell Stuff?
         - Treasure Lootboxes
     - Character Screen
-        - get skillpoints to distribute
-            - another DB Field?
+        - fix screen infos on character switch
     - Equip Move Popup
         - character stats
             - define db schema
@@ -64,5 +62,4 @@
 - Settings Screen
     - Statistics?
     - DB Location
-    - Skip Start Screen -> Main Screen with active Character
     - show damage

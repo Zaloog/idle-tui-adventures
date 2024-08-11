@@ -9,7 +9,7 @@ from random import randint, random
 from textual import on
 from textual.geometry import Offset
 from textual.message import Message
-from textual.events import Click, Compose
+from textual.events import Click, Compose, Mount
 from textual.widget import Widget
 from textual.widgets import ProgressBar, Label, Digits
 from textual.containers import Vertical
@@ -224,15 +224,21 @@ class StageDisplay(Vertical):
     """
 
     def __init__(self) -> None:
+        super().__init__()
         self.stage_string = (
             f"{self.app.gamestate.major_stage} - {self.app.gamestate.minor_stage}"
         )
-        super().__init__()
 
     def compose(self) -> Iterable[Widget]:
         yield Label("Current Stage")
         yield Digits(value=self.stage_string)
         return super().compose()
+
+    def _on_mount(self, event: Mount) -> None:
+        self.stage_string = (
+            f"{self.app.gamestate.major_stage} - {self.app.gamestate.minor_stage}"
+        )
+        return super()._on_mount(event)
 
     def advance_stage(self) -> None:
         if self.app.gamestate.minor_stage == MONSTER_PER_STAGE:
