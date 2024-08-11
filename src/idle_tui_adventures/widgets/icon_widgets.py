@@ -124,8 +124,7 @@ class MenuIconsRow(Horizontal):
         elif self.screen.name == "MainScreen":
             self.app.push_screen(ICON_SCREEN_DICT[icon])
         else:
-            self.app.pop_screen()
-            self.app.push_screen(ICON_SCREEN_DICT[icon])
+            self.app.switch_screen(ICON_SCREEN_DICT[icon])
 
     @on(MenuIcon.Pressed, "#backpack")
     def action_open_backpack(self):
@@ -135,8 +134,7 @@ class MenuIconsRow(Horizontal):
         elif self.screen.name == "MainScreen":
             self.app.push_screen(ICON_SCREEN_DICT[icon])
         else:
-            self.app.pop_screen()
-            self.app.push_screen(ICON_SCREEN_DICT[icon])
+            self.app.switch_screen(ICON_SCREEN_DICT[icon])
 
     @on(MenuIcon.Pressed, "#dungeon")
     def action_open_dungeon(self):
@@ -146,8 +144,7 @@ class MenuIconsRow(Horizontal):
         elif self.screen.name == "MainScreen":
             self.app.push_screen(ICON_SCREEN_DICT[icon])
         else:
-            self.app.pop_screen()
-            self.app.push_screen(ICON_SCREEN_DICT[icon])
+            self.app.switch_screen(ICON_SCREEN_DICT[icon])
 
     @on(MenuIcon.Pressed, "#shop")
     def action_open_shop(self):
@@ -157,8 +154,7 @@ class MenuIconsRow(Horizontal):
         elif self.screen.name == "MainScreen":
             self.app.push_screen(ICON_SCREEN_DICT[icon])
         else:
-            self.app.pop_screen()
-            self.app.push_screen(ICON_SCREEN_DICT[icon])
+            self.app.switch_screen(ICON_SCREEN_DICT[icon])
 
     @on(MenuIcon.Pressed, "#settings")
     def action_open_settings(self):
