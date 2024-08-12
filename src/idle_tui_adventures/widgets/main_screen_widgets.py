@@ -193,10 +193,11 @@ class MonsterPanel(Vertical):
 
     def fight_monster(self):
         damage = self.app.character.damage
-        try:
-            self.mount(DamageLabel(damage=damage, parent_size=self.size))
-        except Exception:
-            pass
+        if self.app.cfg.show_damage:
+            try:
+                self.mount(DamageLabel(damage=damage, parent_size=self.size))
+            except Exception:
+                pass
         self.query_one(HealthBar).damage(damage)
 
     @on(HealthBar.HpReachedZero)
