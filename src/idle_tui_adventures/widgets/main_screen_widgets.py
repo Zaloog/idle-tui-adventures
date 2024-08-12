@@ -193,9 +193,14 @@ class MonsterPanel(Vertical):
 
     def fight_monster(self):
         damage = self.app.character.damage
+        crit = False
+        if random() <= self.app.character.crit_rate:
+            damage = self.app.character.crit_damage
+            crit = True
+
         if self.app.cfg.show_damage:
             try:
-                self.mount(DamageLabel(damage=damage, parent_size=self.size))
+                self.mount(DamageLabel(damage=damage, parent_size=self.size, crit=crit))
             except Exception:
                 pass
         self.query_one(HealthBar).damage(damage)
@@ -278,19 +283,18 @@ class DamageLabel(Label):
     }
     """
 
-    def __init__(self, damage: int, parent_size: Offset) -> None:
+    def __init__(self, damage: int, parent_size: Offset, crit: bool = False) -> None:
         self.damage = damage
         self.wiggle = randint(-10, 10)
 
         self.parent_center = Offset(
             parent_size[0] // 2 + self.wiggle, parent_size[1] // 2
         )
-
         super().__init__(renderable=f"{damage}")
 
-        if random() <= self.app.character.crit_rate:
+        if crit:
             self.styles.border = "outer", "red"
-            self.update(f"CRIT {self.damage}")
+            self.update(f"CRIT {self.damage:.0f}")
 
         self.offset = self.parent_center
         self.fly_away()

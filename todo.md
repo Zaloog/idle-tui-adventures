@@ -1,5 +1,10 @@
 # Todo
 
+- Tests
+    - Test DB and Stuff
+    - must turn show damage of in tests, otherwise pytest gets stuck,
+    if animation i.e. attackspeed is too fast
+
 - Database
     - Struktur
 - Classes

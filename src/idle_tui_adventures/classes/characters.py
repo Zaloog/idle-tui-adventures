@@ -27,10 +27,13 @@ class Character:
     def __post_init__(self) -> None:
         self.equipped_items = self.get_equipped_items()
         self.inventory_items = self.get_inventory_items()
+        # Base Stats
+        self.base_damage = 1
+        self.base_attack_speed = 1.00
+        self.base_crit_rate = 0.05
+        self.base_crit_damage_multiplier = 1.20
         # Calculate Stats
-        self.attack_speed = 2.00
-        self.crit_rate = 0.40
-        self.damage = 100
+        self.calculate_stats()
 
     def level_up(self):
         self.level += 1
@@ -57,8 +60,18 @@ class Character:
                     self.dexterity += new_value
                 case "luck":
                     self.luck += new_value
+        self.calculate_stats()
+
+    def calculate_stats(self):
+        self.damage = self.base_damage + 5 * self.strength
+        self.attack_speed = self.base_attack_speed + 0.01 * self.dexterity
+        self.crit_rate = self.base_crit_rate + 0.01 * self.luck
+        self.crit_damage = self.damage * (
+            self.base_crit_damage_multiplier + 0.02 * self.dexterity
+        )
 
     # von db
     def get_equipped_items(self): ...
+
     # von db
     def get_inventory_items(self): ...
