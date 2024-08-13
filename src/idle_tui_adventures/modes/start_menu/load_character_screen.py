@@ -19,6 +19,7 @@ from idle_tui_adventures.database.db_queries import (
 from idle_tui_adventures.widgets.icon_widgets import CharacterPreview
 from idle_tui_adventures.modes.main_menu.main_screen import MainScreen
 from idle_tui_adventures.modes.main_menu.character_screen import CharacterScreen
+from idle_tui_adventures.modes.main_menu.inventory_screen import InventoryEquipScreen
 
 
 class CharacterSelection(ModalScreen):
@@ -75,3 +76,8 @@ class CharacterSelection(ModalScreen):
 
         self.app.uninstall_screen("CharacterScreen")
         self.app.install_screen(screen=CharacterScreen, name="CharacterScreen")
+
+        self.app.uninstall_screen("InventoryEquipScreen")
+        self.app.install_screen(
+            screen=InventoryEquipScreen, name="InventoryEquipScreen"
+        )

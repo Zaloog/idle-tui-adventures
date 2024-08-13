@@ -260,3 +260,12 @@ ItemPopUpScreen {
     width: 20%;
     }
 }
+
+InventoryEquipScreen {
+    layout: grid;
+    grid-size: 2 2;
+    grid-rows: 75% 24%;
+    grid-columns: 1fr;
+    grid-gutter: 1 4;
+    align: center middle;
+}
