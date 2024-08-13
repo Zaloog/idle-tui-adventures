@@ -25,31 +25,6 @@ class CharacterSelection(ModalScreen):
     app: "IdleAdventure"
     name: str = "CharacterSelection"
     BINDINGS = [("escape", "app.pop_screen")]
-    DEFAULT_CSS = """
-    CharacterSelection {
-        align:center middle;
-
-        CharacterPreview {
-            & :hover {
-                border: outer yellow;
-            }
-        }
-
-        Button {
-            align:center middle;
-            height: 10%;
-            width:1fr;
-        }
-        HorizontalScroll {
-            width: 1fr;
-            height:80%;
-            CharacterPreview {
-                height:1fr;
-                width:33%;
-            }
-        }
-    }
-    """
 
     def compose(self) -> Iterable[Widget]:
         self.characters: list[Row] = get_all_characters()

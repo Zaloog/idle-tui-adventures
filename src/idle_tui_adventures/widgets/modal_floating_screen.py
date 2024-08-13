@@ -13,15 +13,6 @@ from idle_tui_adventures.widgets.inventory_screen_widgets import EquipSlot, Item
 
 class ItemPopUpScreen(ModalScreen):
     valid_position: reactive = False
-    DEFAULT_CSS = """
-    ItemPopUpScreen {
-
-        ItemIcon {
-        height: 20%;
-        width: 20%;
-        }
-    }
-    """
 
     def __init__(self, clicked_item: Item, slot_list: list[EquipSlot | ItemSlot]):
         self.clicked_item = clicked_item

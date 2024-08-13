@@ -20,43 +20,6 @@ class CharacterCreation(ModalScreen):
 
     BINDINGS = [("escape", "app.pop_screen")]
 
-    CSS = """
-    CharacterCreation {
-        content-align:center middle;
-        align:center middle;
-
-        & > Horizontal {
-            layout: grid;
-            grid-size: 2 1;
-            grid-columns: 1fr;
-            align:center middle;
-            }
-        & > Vertical {
-            align:center middle;
-            text-align: center;
-            width: 1fr;
-
-            Center {
-                align:center middle;
-                width: 33%;
-
-                Button {
-                    width: 1fr;
-                    text-align: center;
-                    }
-                Input {
-                    width: 1fr;
-                    text-align: center;
-                    }
-                Select {
-                    width: 1fr;
-                    }
-            }
-        }
-    }
-
-    """
-
     def compose(self) -> Iterable[Widget]:
         with Horizontal():
             # profession image mounted here

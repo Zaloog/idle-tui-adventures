@@ -26,32 +26,6 @@ from idle_tui_adventures.database.db_transactions import (
 class CharacterProgressbar(ProgressBar):
     app: "IdleAdventure"
 
-    DEFAULT_CSS = """
-    CharacterProgressbar {
-        column-span: 5;
-        row-span: 1;
-        width: 1fr;
-        height: 3;
-        align: center middle;
-        layer: above;
-        offset: 0 300%;
-
-        & Bar  {
-            width: 1fr;
-            }
-
-        & Bar > .bar--bar {
-            color: blue;
-            }
-
-        & PercentageStatus {
-        width: 5;
-        align: center middle;
-        offset: -50vw 0;
-        }
-    }
-"""
-
     def __init__(
         self,
         show_percentage: bool = True,
@@ -95,19 +69,19 @@ class CharacterProgressbar(ProgressBar):
 
 class HealthBar(ProgressBar):
     app: "IdleAdventure"
-    DEFAULT_CSS = """
-    HealthBar {
-    height: auto;
+    # DEFAULT_CSS = """
+    # HealthBar {
+    # height: auto;
 
-    & Bar  {
-        width: 1fr;
-        }
+    # & Bar  {
+    #     width: 1fr;
+    #     }
 
-    & Bar > .bar--bar {
-        color: red;
-        }
-    }
-    """
+    # & Bar > .bar--bar {
+    #     color: red;
+    #     }
+    # }
+    # """
 
     class HpReachedZero(Message):
         def __init__(self, healthbar: HealthBar):
@@ -141,27 +115,6 @@ class HealthBar(ProgressBar):
 
 class MonsterPanel(Vertical):
     app: "IdleAdventure"
-    DEFAULT_CSS = """
-    MonsterPanel {
-        row-span: 3;
-        column-span: 2;
-        width: 1fr;
-        height: 1fr;
-
-        HealthBar {
-            height: auto;
-        }
-
-        & ImageStatic {
-            width: 1fr;
-            height: 1fr;
-        }
-        & #label_monster_name {
-            text-align:center;
-            width: 1fr;
-        }
-    }
-    """
 
     class MonsterDefeated(Message):
         def __init__(self, monster_panel: MonsterPanel):
@@ -218,22 +171,6 @@ class MonsterPanel(Vertical):
 
 class StageDisplay(Vertical):
     app: "IdleAdventure"
-    DEFAULT_CSS = """
-    StageDisplay {
-        height: auto;
-        width:1fr;
-        align:center middle;
-
-        & Label {
-            width:1fr;
-            text-align: center;
-        }
-        & Digits {
-            width:1fr;
-            text-align: center;
-        }
-    }
-    """
 
     def __init__(self) -> None:
         super().__init__()
@@ -272,17 +209,6 @@ class StageDisplay(Vertical):
 
 
 class DamageLabel(Label):
-    DEFAULT_CSS = """
-    DamageLabel {
-        layer:above;
-        color:red;
-        text_align:center;
-        width:auto;
-        background:black;
-
-    }
-    """
-
     def __init__(self, damage: int, parent_size: Offset, crit: bool = False) -> None:
         self.damage = damage
         self.wiggle = randint(-10, 10)

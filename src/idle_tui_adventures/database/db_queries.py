@@ -1,4 +1,5 @@
 import sqlite3
+from typing import Any
 from pathlib import Path
 
 from idle_tui_adventures.database.db_utils import create_connection
@@ -74,6 +75,25 @@ def get_gamestate_for_character(
         except sqlite3.Error as e:
             print(e)
             return None
+
+
+def get_items_for_character(
+    character_id: int, database: Path = DB_FULL_PATH
+) -> list[Any]:
+    query_str = """
+    SELECT items.*
+    FROM characters
+    JOIN items ON characters.character_id = items.owned_by
+    WHERE characters.character_id = ?;
+    """
+    with create_connection(database=database) as con:
+        con.row_factory = sqlite3.Row
+        try:
+            gamestate = con.execute(query_str, (character_id,)).fetchall()
+            return gamestate
+        except sqlite3.Error as e:
+            print(e)
+            return []
 
 
 def get_all_items(database: Path = DB_FULL_PATH) -> list[sqlite3.Row]:

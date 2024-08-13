@@ -14,20 +14,6 @@ from idle_tui_adventures.utils import get_random_amount_start_stats
 
 
 class StartStatRandomizer(Vertical):
-    DEFAULT_CSS = """
-    StartStatRandomizer {
-        align: center middle;
-        layout: grid;
-        grid-size: 2 3;
-
-        & Button {
-        column-span: 2;
-        width:1fr;
-        height:1fr;
-        }
-    }
-    """
-
     def compose(self) -> Iterable[Widget]:
         for stat in STATS:
             yield StatDisplayWithoutButton(stat=stat, value=0)

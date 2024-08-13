@@ -2,6 +2,8 @@ from dataclasses import dataclass
 from datetime import datetime
 
 from idle_tui_adventures.constants import PROFESSIONS_LITERAL
+from idle_tui_adventures.classes.items import Item
+from idle_tui_adventures.database.db_queries import get_items_for_character
 from idle_tui_adventures.database.db_transactions import (
     update_experience_db,
     update_level_db,
@@ -25,14 +27,13 @@ class Character:
     luck: int
 
     def __post_init__(self) -> None:
-        self.equipped_items = self.get_equipped_items()
-        self.inventory_items = self.get_inventory_items()
         # Base Stats
         self.base_damage = 1
         self.base_attack_speed = 1.00
         self.base_crit_rate = 0.05
         self.base_crit_damage_multiplier = 1.20
         # Calculate Stats
+        self.get_items_from_db()
         self.calculate_stats()
 
     def level_up(self):
@@ -71,7 +72,11 @@ class Character:
         )
 
     # von db
-    def get_equipped_items(self): ...
-
-    # von db
-    def get_inventory_items(self): ...
+    def get_items_from_db(self):
+        all_items = get_items_for_character(character_id=self.character_id)
+        self.equipped_items = [Item(**item) for item in all_items if item["equipped"]]
+        self.inventory_items = [
+            Item(**item) for item in all_items if not item["equipped"]
+        ]
+        print(self.equipped_items)
+        print(self.inventory_items)

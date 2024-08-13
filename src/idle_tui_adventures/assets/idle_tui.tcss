@@ -1,0 +1,262 @@
+StartScreen {
+        align: center middle;
+
+        Button {
+            width: 33%;
+        }
+        Checkbox {
+            width: 33%;
+        }
+
+    }
+
+
+/*Character Creation Screen    */
+CharacterCreation {
+    content-align:center middle;
+    align:center middle;
+
+    & > Horizontal {
+        layout: grid;
+        grid-size: 2 1;
+        grid-columns: 1fr;
+        align:center middle;
+        }
+    & > Vertical {
+        align:center middle;
+        text-align: center;
+        width: 1fr;
+
+        Center {
+            align:center middle;
+            width: 33%;
+
+            Button {
+                width: 1fr;
+                text-align: center;
+                }
+            Input {
+                width: 1fr;
+                text-align: center;
+                }
+            Select {
+                width: 1fr;
+                }
+        }
+    }
+
+    StartStatRandomizer {
+        align: center middle;
+        layout: grid;
+        grid-size: 2 3;
+
+        & Button {
+        column-span: 2;
+        width:1fr;
+        height:1fr;
+        }
+    }
+
+    MenuIcon {
+        width: 1fr;
+        height: 1fr;
+        align: center middle;
+        content-align: center middle;
+
+    }
+}
+
+/*Character Selection Screen    */
+CharacterSelection {
+    align:center middle;
+
+    CharacterPreview {
+        & :hover {
+            border: outer yellow;
+        }
+    }
+
+    Button {
+        align:center middle;
+        height: 10%;
+        width:1fr;
+    }
+    HorizontalScroll {
+        width: 1fr;
+        height:80%;
+        CharacterPreview {
+            height:1fr;
+            width:33%;
+        }
+    }
+
+    CharacterPreview {
+        width:1fr;
+        height:1fr;
+        align:center middle;
+
+        &.-active {
+            border: outer green;
+        }
+
+        Label {
+            height:10%;
+            width:1fr;
+            content-align:center middle;
+            margin: 0 0;
+            background:black;
+            text-align: center;
+            border:solid brown;
+        }
+        MenuIcon {
+            height:50%;
+            width:1fr;
+            align:center middle;
+        }
+    }
+}
+
+MainScreen {
+    layout: grid;
+    grid-size: 3 4;
+    grid-rows: 1fr;
+    grid-columns: 1fr;
+    grid-gutter: 1;
+    align: center middle;
+
+    MonsterPanel {
+        row-span: 3;
+        column-span: 2;
+        width: 1fr;
+        height: 1fr;
+
+        DamageLabel {
+            layer:above;
+            color:red;
+            text_align:center;
+            width:auto;
+            background:black;
+
+        }
+
+        & ImageStatic {
+            width: 1fr;
+            height: 1fr;
+        }
+        & #label_monster_name {
+            text-align:center;
+            width: 1fr;
+        }
+
+        HealthBar {
+        height: auto;
+        & Bar  {
+            width: 1fr;
+            }
+        & Bar > .bar--bar {
+            color: red;
+            }
+        }
+    }
+
+    StageDisplay {
+        height: auto;
+        width:1fr;
+        align:center middle;
+
+        & Label {
+            width:1fr;
+            text-align: center;
+        }
+        & Digits {
+            width:1fr;
+            text-align: center;
+        }
+    }
+
+    CharacterProgressbar {
+        column-span: 5;
+        row-span: 1;
+        width: 1fr;
+        height: 3;
+        align: center middle;
+        layer: above;
+        offset: 0 300%;
+
+        & Bar  {
+            width: 1fr;
+            }
+
+        & Bar > .bar--bar {
+            color: cyan;
+            }
+
+        & PercentageStatus {
+        width: 5;
+        align: center middle;
+        offset: -50vw 0;
+        }
+    }
+
+}
+
+MenuIconsRow {
+    layout: grid;
+    grid-size: 5 1;
+    grid-rows: 1fr;
+    grid-columns: 1fr;
+    grid-gutter: 1;
+    column-span: 5;
+    height: 30;
+
+    & MenuIcon {
+        width: 1fr;
+        height: 1fr;
+        align: center middle;
+        content-align: center middle;
+        &:hover {
+            background: yellow;
+        }
+        &.-active {
+            background: $success;
+        }
+    }
+}
+
+CharacterScreen {
+    layout: grid;
+    grid-size: 2 4;
+    grid-rows: 1fr;
+    grid-columns: 1fr;
+    grid-gutter: 1 4;
+    align: center middle;
+
+    Placeholder {
+        row-span: 3;
+    }
+    CharacterInterface {
+        row-span: 3;
+        width: 1fr;
+        height: 1fr;
+        align:center middle;
+
+        Placeholder {
+            height: 15%;
+        }
+        StatUpdateDisplay {
+            height: 70%;
+        }
+        Label {
+            width:1fr;
+            text-align: center;
+        }
+    }
+}
+
+ItemPopUpScreen {
+
+    ItemIcon {
+    height: 20%;
+    width: 20%;
+    }
+}

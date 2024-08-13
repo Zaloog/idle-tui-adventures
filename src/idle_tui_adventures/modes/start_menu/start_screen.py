@@ -15,21 +15,8 @@ if TYPE_CHECKING:
 
 
 class StartScreen(Screen):
-    app: 'IdleAdventure'
+    app: "IdleAdventure"
     name: str = "StartScreen"
-    DEFAULT_CSS = """StartScreen {
-        align: center middle;
-
-        Button {
-            width: 33%;
-        }
-        Checkbox {
-            width: 33%;
-        }
-
-    }
-
-    """
 
     def compose(self) -> Iterable[Widget]:
         yield Button("New Character", id="btn_move_to_character_creation")

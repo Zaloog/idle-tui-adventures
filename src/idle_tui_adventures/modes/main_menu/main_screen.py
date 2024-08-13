@@ -21,16 +21,6 @@ class MainScreen(Screen):
     app: "IdleAdventure"
     monster_killed: int = 0
     name: str = "MainScreen"
-    DEFAULT_CSS = """MainScreen {
-        layout: grid;
-        grid-size: 3 4;
-        grid-rows: 1fr;
-        grid-columns: 1fr;
-        grid-gutter: 1;
-        align: center middle;
-    }
-
-    """
 
     def compose(self) -> Iterable[Widget]:
         yield Placeholder("Character", id="tile_0")

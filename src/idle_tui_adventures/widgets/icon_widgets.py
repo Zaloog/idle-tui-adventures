@@ -23,14 +23,6 @@ from idle_tui_adventures.utils import get_icon, get_nice_tooltip
 
 
 class ImageStatic(Static):
-    DEFAULT_CSS = """MenuIcon {
-        width: 1fr;
-        height: 1fr;
-        align: center middle;
-        content-align: center middle;
-
-    }"""
-
     def __init__(self, icon_name: ICONS_LITERAL, id: str | None = None) -> None:
         self.icon_name = icon_name
         self.icon = get_icon(icon=self.icon_name, width=30, heigth=int(1.8 * 25))
@@ -46,14 +38,6 @@ class ImageStatic(Static):
 
 class MenuIcon(ImageStatic):
     BINDINGS = [Binding("enter", "press", "Press Icon", show=False)]
-
-    DEFAULT_CSS = """MenuIcon {
-        width: 1fr;
-        height: 1fr;
-        align: center middle;
-        content-align: center middle;
-
-    }"""
 
     class Pressed(Message):
         def __init__(self, icon: MenuIcon) -> None:
@@ -86,27 +70,6 @@ class MenuIconsRow(Horizontal):
         Binding("d", "open_dungeon", priority=True),
         Binding("l", "open_shop", priority=True),
     ]
-    DEFAULT_CSS = """MenuIconsRow {
-        layout: grid;
-        grid-size: 5 1;
-        grid-rows: 1fr;
-        grid-columns: 1fr;
-        grid-gutter: 1;
-        column-span: 5;
-        height: 30;
-
-        & MenuIcon {
-            &:hover {
-                background: yellow;
-            }
-            &.-active {
-                background: $success;
-            }
-        }
-
-    }
-
-"""
 
     def compose(self) -> Iterable[Widget]:
         self.can_focus = True
@@ -162,33 +125,6 @@ class MenuIconsRow(Horizontal):
 
 
 class CharacterPreview(Vertical):
-    DEFAULT_CSS = """
-    CharacterPreview {
-        width:1fr;
-        height:1fr;
-        align:center middle;
-
-        &.-active {
-            border: outer green;
-        }
-
-        Label {
-            height:10%;
-            width:1fr;
-            content-align:center middle;
-            margin: 0 0;
-            background:black;
-            text-align: center;
-            border:solid brown;
-        }
-        MenuIcon {
-            height:50%;
-            width:1fr;
-            align:center middle;
-        }
-    }
-    """
-
     def __init__(self, character_data: Row, stage_data: Row | None):
         self.character: Character = Character(**dict(character_data))
 

@@ -33,25 +33,6 @@ class CharacterInterface(Vertical):
     )
 
     app: "IdleAdventure"
-    DEFAULT_CSS = """
-    CharacterInterface {
-        width: 1fr;
-        height: 1fr;
-        align:center middle;
-
-        Placeholder {
-            height: 15%;
-        }
-        StatUpdateDisplay {
-            height: 70%;
-        }
-        Label {
-            width:1fr;
-            text-align: center;
-        }
-    }
-
-    """
 
     def __init__(self) -> None:
         self.current_stat_dict = {

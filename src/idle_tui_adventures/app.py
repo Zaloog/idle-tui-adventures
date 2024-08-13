@@ -1,3 +1,5 @@
+from pathlib import Path
+
 from textual.app import App
 
 from idle_tui_adventures.classes.characters import Character
@@ -20,6 +22,7 @@ from idle_tui_adventures.modes.settings_menu.settings_screen import SettingsScre
 class IdleAdventure(App[None]):
     character: Character
     gamestate: GameState  # | None
+    CSS_PATH = Path("./assets/idle_tui.tcss")
 
     BINDINGS = [
         ("1", "switch_mode('Start')"),
