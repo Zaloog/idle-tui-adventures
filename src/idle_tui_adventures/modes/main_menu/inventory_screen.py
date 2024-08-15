@@ -33,10 +33,6 @@ class InventoryEquipScreen(ModalScreen):
 
     def _on_mount(self, event: Mount) -> None:
         self.query_one("#backpack").add_class("-active")
-        for i, item in enumerate(self.app.character.inventory_items):
-            self.query_one(Inventory).query_one(f"#slot_{i}", Slot).place_item(
-                ItemIcon(item=item)
-            )
 
         return super()._on_mount(event)
 

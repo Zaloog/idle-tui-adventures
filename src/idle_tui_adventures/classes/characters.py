@@ -78,5 +78,3 @@ class Character:
         self.inventory_items = [
             Item(**item) for item in all_items if not item["equipped"]
         ]
-        print(self.equipped_items)
-        print(self.inventory_items)

@@ -35,7 +35,7 @@ class CharacterProgressbar(ProgressBar):
 
     def _on_compose(self, event: Compose) -> Coroutine[Any, Any, None]:
         self.timer = self.set_interval(
-            1 / 10, self.make_progress, pause=True, name="ProgressbarTimer"
+            1, self.make_progress, pause=True, name="ProgressbarTimer"
         )
         return super()._on_compose(event)
 
@@ -50,7 +50,7 @@ class CharacterProgressbar(ProgressBar):
         return super().on_mount()
 
     def make_progress(self):
-        self.update(advance=1)
+        self.update(advance=10)
         self.app.character.collect_exp()
         if self.percentage == 1:
             self.advance_level()
@@ -69,19 +69,6 @@ class CharacterProgressbar(ProgressBar):
 
 class HealthBar(ProgressBar):
     app: "IdleAdventure"
-    # DEFAULT_CSS = """
-    # HealthBar {
-    # height: auto;
-
-    # & Bar  {
-    #     width: 1fr;
-    #     }
-
-    # & Bar > .bar--bar {
-    #     color: red;
-    #     }
-    # }
-    # """
 
     class HpReachedZero(Message):
         def __init__(self, healthbar: HealthBar):

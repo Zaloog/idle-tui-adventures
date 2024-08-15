@@ -1,6 +1,10 @@
-from typing import Iterable
 from math import prod
+from typing import Iterable, TYPE_CHECKING
 
+if TYPE_CHECKING:
+    from idle_tui_adventures.app import IdleAdventure
+
+from textual.events import Mount
 from textual.reactive import reactive
 from textual.widget import Widget
 from textual.widgets import Static
@@ -12,6 +16,7 @@ from idle_tui_adventures.widgets.icon_widgets import ItemIcon
 
 
 class Inventory(Grid):
+    app: "IdleAdventure"
     inventory_dict: dict
 
     DEFAULT_CSS = (
@@ -28,14 +33,19 @@ class Inventory(Grid):
         % INVENTORY_SIZE
     )
 
-    # On Mount?
-    # query items
-    # place items
     def compose(self) -> Iterable[Widget]:
         for i in range(prod(INVENTORY_SIZE)):
             yield ItemSlot(id=f"slot_{i}")
 
         return super().compose()
+
+    def _on_mount(self, event: Mount) -> None:
+        self.fill_inventory()
+        return super()._on_mount(event)
+
+    def fill_inventory(self):
+        for i, item in enumerate(self.app.character.inventory_items):
+            self.query_one(f"#slot_{i}", Slot).place_item(ItemIcon(item=item))
 
 
 class Equipment(Grid):

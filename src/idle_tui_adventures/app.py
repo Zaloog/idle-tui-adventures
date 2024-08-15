@@ -67,6 +67,7 @@ class IdleAdventure(App[None]):
                 severity="warning",
             )
             self.character = None
+            self.gamestate = None
 
     def load_game_state(self):
         if gamestate := get_gamestate_for_character(
