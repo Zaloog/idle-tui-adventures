@@ -45,7 +45,7 @@ ITEM_RARITIES_COLOR_DICT = {
     "common": "green",
     "rare": "blue",
     "epic": "red",
-    "orange": "orange",
+    "legendary": "orange",
     "unique": "#aefdfd",
 }
 

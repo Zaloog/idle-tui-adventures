@@ -20,7 +20,7 @@ def main():
         name="Axe of Ordinary",
         level_needed=1,
         category="Weapon",
-        rarity="unique",
+        rarity="legendary",
         damage=3,
         attack_speed=1.05,
         strength=0,

@@ -277,4 +277,25 @@ ShopScreen {
     grid-columns: 1fr;
     grid-gutter: 1 4;
     align: center middle;
+
+    ShopInterface {
+        height: 1fr;
+
+        Placeholder {
+            height: 1fr;
+            background:green;
+        }
+
+        LootBoxRow {
+            height: 20%;
+
+            Button {
+                height:1fr;
+                width:1fr;
+                & :hover{
+                    border:outer black;
+                }
+            }
+        }
+    }
 }

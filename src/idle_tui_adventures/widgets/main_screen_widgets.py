@@ -50,8 +50,9 @@ class CharacterProgressbar(ProgressBar):
         return super().on_mount()
 
     def make_progress(self):
-        self.update(advance=10)
-        self.app.character.collect_exp()
+        exp_amount = 10
+        self.update(advance=exp_amount)
+        self.app.character.collect_exp(exp_amount=exp_amount)
         if self.percentage == 1:
             self.advance_level()
 
