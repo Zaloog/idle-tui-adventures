@@ -44,11 +44,14 @@ class CharacterSelection(ModalScreen):
             self.query_one(
                 f"#character_id_{self.app.cfg.active_character_id}"
             ).add_class("-active")
+            self.app.load_active_character()
         except Exception:
+            self.query_one("#btn_start_adventure", Button).disabled = True
             self.notify(
                 title="No active character selected",
                 message="Please select a character or create one",
                 severity="error",
+                timeout=1,
             )
         return super()._on_mount(event)
 

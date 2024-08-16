@@ -31,7 +31,6 @@
             - Shield
             - Helmet
             - Armor
-            - Gloves
             - Boots
             - Rings
 
@@ -54,9 +53,6 @@
             - Stage X/1 -> X/10 -> Boss -> X+1/1...
     - Shop Screen
         - Buy/Sell Stuff?
-        - Treasure Lootboxes
-    - Character Screen
-        - fix screen infos on character switch
     - Equip Move Popup
         - character stats
             - define db schema

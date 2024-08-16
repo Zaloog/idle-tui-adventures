@@ -65,6 +65,7 @@ class IdleAdventure(App[None]):
                 title="No Character Found",
                 message="Please create a character first",
                 severity="warning",
+                timeout=1,
             )
             self.character = None
             self.gamestate = None
