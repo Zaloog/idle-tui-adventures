@@ -2,6 +2,7 @@ import random
 from typing import Literal, get_args, Any
 from collections import Counter
 
+from idle_tui_adventures.database.db_transactions import create_new_item_db
 from idle_tui_adventures.constants import (
     PROFESSIONS_LITERAL,
     STATS,
@@ -37,7 +38,7 @@ def get_random_amount_start_stats(profession: PROFESSIONS_LITERAL):
 NAME_EQUIPMENT_OPTIONS_LITERAL = Literal[
     "Armor",
     "Helmet",
-    "Rings",
+    "Ring",
     "Axe",
     "Scythe",
     "Shovel",
@@ -78,7 +79,9 @@ def get_random_equipment_name() -> tuple[Any, Any]:
 
 
 def get_random_level_needed(current_lvl: int) -> int:
-    return random.randint(current_lvl - LEVEL_DROP_SPAN, current_lvl + LEVEL_DROP_SPAN)
+    return max(
+        1, random.randint(current_lvl - LEVEL_DROP_SPAN, current_lvl + LEVEL_DROP_SPAN)
+    )
 
 
 # add multiplier
@@ -86,17 +89,31 @@ def get_random_rarity() -> RARITIES_LITERAL:
     return random.choices(population=RARITIES, weights=RARITIES_DROP_CANCE, k=1)[0]
 
 
-def create_new_equipment(owned_by: int, current_lvl: int):
-    ...
-    # category, adjective = get_random_equipment_name()
-    # name = f"{category} of {adjective}"
-    # level_needed = (get_random_level_needed(current_lvl=current_lvl),)
-    # category = (category,)
-    # rarity = get_random_rarity()
-    # damage=3,
-    # attack_speed=1.05,
-    # strength=0,
-    # intelligence=0,
-    # dexterity=0,
-    # luck=2,
-    # owned_by=1,
+DAMAGE_SPAN = 0.1  # +-10%
+DMG_PER_LV = 20
+
+
+def get_random_base_damage(weapon_lvl: int) -> int:
+    return random.randint(
+        int(weapon_lvl * DMG_PER_LV * (1 - DAMAGE_SPAN)),
+        int(weapon_lvl * DMG_PER_LV * (1 + DAMAGE_SPAN)),
+    )
+
+
+def create_new_equipment(owned_by: int, current_lvl: int) -> None:
+    category, adjective = get_random_equipment_name()
+    level_needed = get_random_level_needed(current_lvl=current_lvl)
+
+    create_new_item_db(
+        name=f"{category} of {adjective}",
+        level_needed=level_needed,
+        rarity=get_random_rarity(),
+        category=category,
+        damage=get_random_base_damage(weapon_lvl=level_needed),
+        attack_speed=1.00,
+        strength=0,
+        intelligence=0,
+        dexterity=0,
+        luck=0,
+        owned_by=owned_by,
+    )

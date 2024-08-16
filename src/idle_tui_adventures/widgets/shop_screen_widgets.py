@@ -1,6 +1,5 @@
 from typing import Iterable
 
-from textual import on
 from textual.widget import Widget
 from textual.widgets import Placeholder, Button, Label
 from textual.containers import Vertical, Horizontal
@@ -20,8 +19,3 @@ class LootBoxRow(Horizontal):
         yield Button("Epic\nPull", id="btn_spawn_epic", variant="error")
         yield Button("Legend\nPull", id="btn_spawn_legend", variant="warning")
         return super().compose()
-
-    @on(Button.Pressed)
-    def pull_item(self, event: Button.Pressed):
-        rarity = event.button.id.split("_")[-1]
-        self.notify(message=rarity)

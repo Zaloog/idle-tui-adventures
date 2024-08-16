@@ -190,7 +190,8 @@ class ItemIcon(Static):
         super().__init__()
 
     def compose(self) -> Iterable[Widget]:
-        self.update(renderable=get_icon(icon=self.item.category))
+        self.icon_img = self.item.name.split(" ")[0]
+        self.update(renderable=get_icon(icon=self.icon_img))
         self.styles.background = ITEM_RARITIES_COLOR_DICT[self.item.rarity]
 
         self.tooltip = get_nice_tooltip(item=self.item)
@@ -215,7 +216,5 @@ class ItemIcon(Static):
     def keep_image_size(self, event: Resize) -> None:
         new_width, new_height = event.size
         self.update(
-            get_icon(
-                icon=self.item.category, width=new_width, heigth=int(1.8 * new_height)
-            )
+            get_icon(icon=self.icon_img, width=new_width, heigth=int(1.8 * new_height))
         )

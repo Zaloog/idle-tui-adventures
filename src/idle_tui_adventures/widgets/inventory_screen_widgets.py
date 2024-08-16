@@ -47,6 +47,12 @@ class Inventory(Grid):
         for i, item in enumerate(self.app.character.inventory_items):
             self.query_one(f"#slot_{i}", Slot).place_item(ItemIcon(item=item))
 
+    def update_inventory(self):
+        self.recompose()
+        self.app.character.get_items_from_db()
+        for i, item in enumerate(self.app.character.inventory_items):
+            self.query_one(f"#slot_{i}", Slot).place_item(ItemIcon(item=item))
+
 
 class Equipment(Grid):
     equipment_dict: dict
