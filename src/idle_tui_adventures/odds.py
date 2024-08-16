@@ -62,13 +62,30 @@ ADJ_EQUIPMENT_OPTIONS = get_args(ADJ_EQUIPMENT_OPTIONS_LITERAL)
 
 LEVEL_DROP_SPAN = 2
 
-RARITIES_DROP_CANCE = [
-    0.54,
-    0.30,
-    0.10,
-    0.05,
-    0.01,
-]
+PULL_VARIANTS_LITERAL = Literal["normal", "epic", "legend"]
+RARITIES_DROP_CANCE_DICT = {
+    "normal": [
+        0.54,
+        0.30,
+        0.10,
+        0.05,
+        0.01,
+    ],
+    "epic": [
+        0.34,
+        0.30,
+        0.24,
+        0.10,
+        0.02,
+    ],
+    "legend": [
+        0.0,
+        0.50,
+        0.35,
+        0.20,
+        0.05,
+    ],
+}
 
 
 def get_random_equipment_name() -> tuple[Any, Any]:
@@ -85,8 +102,10 @@ def get_random_level_needed(current_lvl: int) -> int:
 
 
 # add multiplier
-def get_random_rarity() -> RARITIES_LITERAL:
-    return random.choices(population=RARITIES, weights=RARITIES_DROP_CANCE, k=1)[0]
+def get_random_rarity(pull_variant: PULL_VARIANTS_LITERAL) -> RARITIES_LITERAL:
+    return random.choices(
+        population=RARITIES, weights=RARITIES_DROP_CANCE_DICT[pull_variant], k=1
+    )[0]
 
 
 DAMAGE_SPAN = 0.1  # +-10%
@@ -100,20 +119,22 @@ def get_random_base_damage(weapon_lvl: int) -> int:
     )
 
 
-def create_new_equipment(owned_by: int, current_lvl: int) -> None:
+def create_new_equipment(
+    pull_variant: PULL_VARIANTS_LITERAL, owned_by: int, current_lvl: int
+) -> None:
     category, adjective = get_random_equipment_name()
     level_needed = get_random_level_needed(current_lvl=current_lvl)
 
     create_new_item_db(
         name=f"{category} of {adjective}",
         level_needed=level_needed,
-        rarity=get_random_rarity(),
+        rarity=get_random_rarity(pull_variant=pull_variant),
         category=category,
         damage=get_random_base_damage(weapon_lvl=level_needed),
         attack_speed=1.00,
-        strength=0,
-        intelligence=0,
-        dexterity=0,
-        luck=0,
+        strength=1,
+        intelligence=1,
+        dexterity=1,
+        luck=1,
         owned_by=owned_by,
     )

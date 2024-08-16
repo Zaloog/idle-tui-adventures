@@ -56,7 +56,7 @@ class IdleAdventure(App[None]):
             info_txt = f'Name:\t\t[blue]{db_entry['name']}[/]\n'
             info_txt += f'Level:\t\t[blue]{db_entry['level']}[/]\n'
             info_txt += f'Profession:\t[blue]{db_entry['profession']}[/]'
-            self.notify(title="Character Active", message=info_txt, timeout=2)
+            self.notify(title="Character Active", message=info_txt, timeout=1.5)
             self.character = Character(**db_entry)
 
             self.load_game_state()
@@ -75,7 +75,7 @@ class IdleAdventure(App[None]):
             character_id=self.character.character_id
         ):
             self.gamestate = GameState(**gamestate)
-            self.notify(title="Gamestate Found", message=f"{self.gamestate}")
+            # self.notify(title="Gamestate Found", message=f"{self.gamestate}")
         else:
             create_initial_gamestate(character_id=self.character.character_id)
             self.gamestate = GameState(

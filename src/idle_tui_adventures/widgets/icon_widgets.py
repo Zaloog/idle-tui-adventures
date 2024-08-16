@@ -171,17 +171,18 @@ class CharacterPreview(Vertical):
 
 class ItemIcon(Static):
     DEFAULT_CSS = """
-    ItemIcon {
-        width: 1fr;
-        height: 1fr;
-        align: center middle;
-        content-align: center middle;
+    # ItemIcon {
+    #     width: 1fr;
+    #     height: 1fr;
+    #     align: center middle;
+    #     content-align: center middle;
 
-        & :hover {
-        border: outer black;
-        }
+    #     & :hover {
+    #     border: outer black;
 
-    }
+    #     }
+
+    # }
     """
 
     def __init__(self, item: Item, relocating: bool = False) -> None:

@@ -39,6 +39,7 @@ class ShopScreen(ModalScreen):
         rarity = event.button.id.split("_")[-1]
         self.notify(message=rarity)
         create_new_equipment(
+            pull_variant=rarity,
             owned_by=self.app.character.character_id,
             current_lvl=self.app.character.level,
         )

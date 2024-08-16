@@ -258,8 +258,27 @@ ItemPopUpScreen {
     ItemIcon {
     height: 20%;
     width: 20%;
+
     }
 }
+
+ItemIcon {
+    width: 1fr;
+    height: 1fr;
+    align: center middle;
+    content-align: center middle;
+
+    & :hover {
+    border: outer black;
+    }
+    Tooltip {
+        color: white;
+        display: block;
+        text-align: center;
+        background: black;
+    }
+}
+
 
 InventoryEquipScreen {
     layout: grid;
