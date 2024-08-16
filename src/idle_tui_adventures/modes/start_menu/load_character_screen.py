@@ -20,6 +20,7 @@ from idle_tui_adventures.widgets.icon_widgets import CharacterPreview
 from idle_tui_adventures.modes.main_menu.main_screen import MainScreen
 from idle_tui_adventures.modes.main_menu.character_screen import CharacterScreen
 from idle_tui_adventures.modes.main_menu.inventory_screen import InventoryEquipScreen
+from idle_tui_adventures.modes.main_menu.shop_screen import ShopScreen
 
 
 class CharacterSelection(ModalScreen):
@@ -48,10 +49,10 @@ class CharacterSelection(ModalScreen):
         except Exception:
             self.query_one("#btn_start_adventure", Button).disabled = True
             self.notify(
-                title="No active character selected",
-                message="Please select a character or create one",
+                title="No active character available",
+                message="Please create your first character",
                 severity="error",
-                timeout=1,
+                timeout=2,
             )
         return super()._on_mount(event)
 
@@ -84,3 +85,6 @@ class CharacterSelection(ModalScreen):
         self.app.install_screen(
             screen=InventoryEquipScreen, name="InventoryEquipScreen"
         )
+
+        self.app.uninstall_screen("ShopScreen")
+        self.app.install_screen(screen=ShopScreen, name="ShopScreen")

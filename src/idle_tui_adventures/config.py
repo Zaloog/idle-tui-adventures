@@ -64,7 +64,7 @@ def init_new_config(conf_path=CONFIG_FULL_PATH):
     config = ConfigParser(default_section=None, allow_no_value=True)
     config.optionxform = str
     config["database"] = {"database_path": DB_FULL_PATH}
-    config["character.active"] = {"character_id": 0}
+    config["character.active"] = {"character_id": 1}
     config["game.settings"] = {"skip_start_screen": False, "show_damage": True}
 
     with open(conf_path, "w") as conf_file:
