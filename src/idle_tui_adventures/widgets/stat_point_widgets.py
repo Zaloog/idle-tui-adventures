@@ -10,7 +10,7 @@ from textual.widgets import Digits, Button
 from textual.containers import Horizontal, Vertical
 
 from idle_tui_adventures.constants import STATS_LITERAL, STATS, PROFESSION_MAINSTAT_DICT
-from idle_tui_adventures.utils import get_random_amount_start_stats
+from idle_tui_adventures.odds import get_random_amount_start_stats
 
 
 class StartStatRandomizer(Vertical):

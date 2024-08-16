@@ -23,14 +23,6 @@ DB_FULL_PATH = DB_PATH / DB_NAME
 # Stats related
 STATS_LITERAL = Literal["strength", "intelligence", "dexterity", "luck"]
 STATS = get_args(STATS_LITERAL)
-MIN_START_STAT = 18
-MAX_START_STAT = 22
-START_STAT_DISTRIBUTION_DICT = {
-    "Warrior": [0.4, 0.2, 0.2, 0.2],
-    "Mage": [0.2, 0.4, 0.2, 0.2],
-    "Ranger": [0.2, 0.2, 0.4, 0.2],
-    "Thief": [0.2, 0.2, 0.2, 0.4],
-}
 PROFESSION_MAINSTAT_DICT = {
     "Warrior": "strength",
     "Mage": "intelligence",
@@ -52,8 +44,14 @@ ITEM_RARITIES_COLOR_DICT = {
 # Item-category
 ITEM_CATEGORIES_LITERAL = Literal[
     "Consumable",
-    "Weapon",
     "Armor",
+    "Helmet",
+    "Rings",
+    "Weapon",
+    # "Axe",
+    # "Scythe",
+    # "Shovel",
+    # "Wrench",
 ]
 ITEM_CATEGORIES = get_args(ITEM_CATEGORIES_LITERAL)
 

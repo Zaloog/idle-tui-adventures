@@ -6,7 +6,7 @@ from textual.widget import Widget
 from textual.widgets import Button, Input, Select
 from textual.containers import Vertical, Horizontal, Center
 
-from idle_tui_adventures.database.db_transactions import create_new_character
+from idle_tui_adventures.database.db_transactions import create_new_character_db
 from idle_tui_adventures.widgets.stat_point_widgets import (
     StartStatRandomizer,
     StatDisplayWithoutButton,
@@ -58,7 +58,7 @@ class CharacterCreation(ModalScreen):
             "profession": profession,
             **stats,
         }
-        if (msg := create_new_character(**char_dict)) == 0:
+        if (msg := create_new_character_db(**char_dict)) == 0:
             self.notify(
                 title="Character Creation Successful",
                 message=f"[blue]{name}[/], the [blue]{profession}[/] is ready for Adventures",

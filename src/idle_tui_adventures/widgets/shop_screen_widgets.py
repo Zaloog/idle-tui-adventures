@@ -1,9 +1,9 @@
 from typing import Iterable
 
+from textual import on
 from textual.widget import Widget
 from textual.widgets import Placeholder, Button, Label
 from textual.containers import Vertical, Horizontal
-from textual.screen import ModalScreen
 
 
 class ShopInterface(Vertical):
@@ -21,5 +21,7 @@ class LootBoxRow(Horizontal):
         yield Button("Legend\nPull", id="btn_spawn_legend", variant="warning")
         return super().compose()
 
-
-class ItemPreviewScreen(ModalScreen): ...
+    @on(Button.Pressed)
+    def pull_item(self, event: Button.Pressed):
+        rarity = event.button.id.split("_")[-1]
+        self.notify(message=rarity)

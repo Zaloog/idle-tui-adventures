@@ -1,6 +1,6 @@
 from idle_tui_adventures.database.db_transactions import (
-    create_new_item,
-    create_new_character,
+    create_new_item_db,
+    create_new_character_db,
 )
 from idle_tui_adventures.database.db_utils import init_new_db
 
@@ -8,7 +8,7 @@ from idle_tui_adventures.database.db_utils import init_new_db
 def main():
     init_new_db()
 
-    create_new_character(
+    create_new_character_db(
         name="Test_Char",
         profession="Warrior",
         strength=5,
@@ -16,7 +16,7 @@ def main():
         dexterity=5,
         luck=5,
     )
-    create_new_item(
+    create_new_item_db(
         name="Axe of Ordinary",
         level_needed=1,
         category="Weapon",

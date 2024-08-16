@@ -3,7 +3,7 @@ import pytest
 from idle_tui_adventures.constants import CONFIG_NAME, DB_NAME
 from idle_tui_adventures.config import init_new_config, IdleTuiConfig
 from idle_tui_adventures.database.db_utils import init_new_db
-from idle_tui_adventures.database.db_transactions import create_new_character
+from idle_tui_adventures.database.db_transactions import create_new_character_db
 from idle_tui_adventures.app import IdleAdventure
 
 
@@ -39,7 +39,7 @@ def test_db_file_path(test_db_path):
 def init_test_db(test_db_file_path):
     init_new_db(database=test_db_file_path)
 
-    create_new_character(
+    create_new_character_db(
         name="Test",
         profession="Warrior",
         strength=0,

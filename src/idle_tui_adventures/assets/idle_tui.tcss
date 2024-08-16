@@ -286,16 +286,17 @@ ShopScreen {
             background:green;
         }
 
-        LootBoxRow {
-            height: 20%;
+    }
+}
 
-            Button {
-                height:1fr;
-                width:1fr;
-                & :hover{
-                    border:outer black;
-                }
-            }
+LootBoxRow {
+    height: 20%;
+
+    Button {
+        height:1fr;
+        width:1fr;
+        & :hover{
+            border:outer black;
         }
     }
 }

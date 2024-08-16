@@ -11,7 +11,7 @@ from idle_tui_adventures.constants import (
 )
 
 
-def create_new_character(
+def create_new_character_db(
     name: str,
     profession: PROFESSIONS_LITERAL,
     strength: int,
@@ -64,7 +64,7 @@ def create_new_character(
             return e.sqlite_errorname
 
 
-def create_new_item(
+def create_new_item_db(
     name: str,
     level_needed: int,
     rarity: RARITIES_LITERAL,
