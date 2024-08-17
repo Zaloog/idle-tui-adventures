@@ -34,3 +34,6 @@ class DungeonScreen(ModalScreen):
         self.query_one("#dungeon").add_class("-active")
         self.log.error("set to active")
         return super()._on_mount(event)
+
+    def on_screen_resume(self):
+        self.query_one(MenuIconsRow).focus()

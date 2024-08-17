@@ -15,6 +15,10 @@ class IdleTuiConfig:
         self.config.read(self.config_path)
 
     @property
+    def database_path(self) -> int:
+        return self.config.get(section="database", option="database_path")
+
+    @property
     def active_character_id(self) -> int:
         return self.config.getint(section="character.active", option="character_id")
 

@@ -41,3 +41,5 @@ class CharacterScreen(ModalScreen):
         self.query_one(CharacterInterface).mutate_reactive(
             CharacterInterface.spent_stat_dict
         )
+
+        self.query_one(MenuIconsRow).focus()

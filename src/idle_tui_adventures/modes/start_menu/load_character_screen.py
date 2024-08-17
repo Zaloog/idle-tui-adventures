@@ -29,7 +29,9 @@ class CharacterSelection(ModalScreen):
     BINDINGS = [("escape", "app.pop_screen")]
 
     def compose(self) -> Iterable[Widget]:
-        self.characters: list[Row] = get_all_characters()
+        self.characters: list[Row] = get_all_characters(
+            database=self.app.cfg.database_path
+        )
         with HorizontalScroll():
             for char_data in self.characters:
                 stage_data = get_stages_for_character(

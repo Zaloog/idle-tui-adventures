@@ -6,7 +6,7 @@ def test_init_new_config(test_app_config, test_config_file_path):
     assert "character.active" in test_app_config.config.sections()
     assert test_config_file_path.exists()
 
-    assert test_app_config.active_character_id == 0
+    assert test_app_config.active_character_id == 1
     assert not test_app_config.skip_screen
     assert test_app_config.show_damage
 

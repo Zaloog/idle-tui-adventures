@@ -61,3 +61,6 @@ class InventoryEquipScreen(ModalScreen):
 
             initial_slot_widget.remove_item()
             target_slot_widget.place_item(item=ItemIcon(target_item))
+
+    def on_screen_resume(self):
+        self.query_one(MenuIconsRow).focus()
