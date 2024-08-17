@@ -34,6 +34,8 @@ class Character:
         self.base_crit_rate = 0.05
         self.base_crit_damage_multiplier = 1.20
         # Calculate Stats
+        self.equipped_items: list[Item] = []
+        self.inventory_items: list[Item] = []
         # self.get_items_from_db()
         self.calculate_stats()
 

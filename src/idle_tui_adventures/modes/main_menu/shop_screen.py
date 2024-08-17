@@ -15,8 +15,8 @@ from idle_tui_adventures.widgets.inventory_screen_widgets import Inventory, Slot
 from idle_tui_adventures.widgets.shop_screen_widgets import ShopInterface
 from idle_tui_adventures.widgets.modal_floating_screen import ItemPopUpScreen
 from idle_tui_adventures.classes.items import Item
-
 from idle_tui_adventures.odds import create_new_equipment
+from idle_tui_adventures.constants import INVENTORY_SIZE
 
 
 class ShopScreen(ModalScreen):
@@ -36,8 +36,15 @@ class ShopScreen(ModalScreen):
 
     @on(Button.Pressed)
     def pull_item(self, event: Button.Pressed):
+        if self.app.character.inventory_items == INVENTORY_SIZE:
+            self.notify(
+                title="Inventory Full",
+                message="Make sure you have enough space before pulling new items",
+                severity="warning",
+            )
+            return
+
         rarity = event.button.id.split("_")[-1]
-        self.notify(message=rarity)
         create_new_equipment(
             pull_variant=rarity,
             owned_by=self.app.character.character_id,

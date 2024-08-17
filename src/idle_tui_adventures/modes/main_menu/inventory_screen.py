@@ -63,4 +63,5 @@ class InventoryEquipScreen(ModalScreen):
             target_slot_widget.place_item(item=ItemIcon(target_item))
 
     def on_screen_resume(self):
+        self.query_one(Inventory).update_inventory()
         self.query_one(MenuIconsRow).focus()

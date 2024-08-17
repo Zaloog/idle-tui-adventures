@@ -322,30 +322,31 @@ LootBoxRow {
 
 Equipment {
     layout:grid;
-    grid-size:3 3;
+    grid-size:3 1;
     grid-columns: 1fr;
     grid-rows: 1fr;
 
-    #slot_helmet {
-        offset: 100% 0%;
+
+}
+
+ItemSlot {
+        width: 1fr;
+        height: 1fr;
+        align: center middle;
+        content-align: center middle;
+        background: #ba9f68;
+        border:outer #6a4f32;
+        border-subtitle-background:#6a4f32;
+
     }
-    #slot_armor {
-        offset: 0% 100%;
-    }
-    #slot_boots {
-        offset: -100% 200%;
-    }
-    #slot_weapon1 {
-        offset: 0% 50%;
-    }
-    #slot_weapon2 {
-        offset: 100% 50%;
-    }
-    #slot_ring1 {
-        offset: -200% -50%;
-    }
-    #slot_ring2 {
-        offset: 200% -150%;
-    }
+
+EquipSlot {
+    width: 1fr;
+    height: 1fr;
+    align: center middle;
+    content-align: center middle;
+    background:  #6b6c6f;
+    border:outer #474748;
+    border-subtitle-background:#474748;
 
 }

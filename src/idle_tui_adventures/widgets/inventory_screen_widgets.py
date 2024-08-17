@@ -8,7 +8,7 @@ from textual.events import Mount
 from textual.reactive import reactive
 from textual.widget import Widget
 from textual.widgets import Static
-from textual.containers import Grid
+from textual.containers import Grid, Vertical
 
 from idle_tui_adventures.constants import INVENTORY_SIZE, ITEM_CATEGORIES_LITERAL
 from idle_tui_adventures.classes.items import Item
@@ -17,7 +17,6 @@ from idle_tui_adventures.widgets.icon_widgets import ItemIcon
 
 class Inventory(Grid):
     app: "IdleAdventure"
-    inventory_dict: dict
 
     DEFAULT_CSS = (
         """
@@ -63,13 +62,16 @@ class Equipment(Grid):
     # place items
 
     def compose(self) -> Iterable[Widget]:
-        yield EquipSlot(id="slot_helmet", category="Helmet")
-        yield EquipSlot(id="slot_armor", category="Armor")
-        yield EquipSlot(id="slot_boots", category="Boots")
-        yield EquipSlot(id="slot_weapon1", category="Weapon")
-        yield EquipSlot(id="slot_weapon2", category="Weapon")
-        yield EquipSlot(id="slot_ring1", category="Ring")
-        yield EquipSlot(id="slot_ring2", category="Ring")
+        with Vertical():
+            yield EquipSlot(id="slot_ring1", category="Ring")
+            yield EquipSlot(id="slot_weapon1", category="Weapon")
+        with Vertical():
+            yield EquipSlot(id="slot_helmet", category="Helmet")
+            yield EquipSlot(id="slot_armor", category="Armor")
+            yield EquipSlot(id="slot_boots", category="Boots")
+        with Vertical():
+            yield EquipSlot(id="slot_ring2", category="Ring")
+            yield EquipSlot(id="slot_weapon2", category="Weapon")
 
         return super().compose()
 
@@ -108,17 +110,6 @@ class Slot(Static):
 
 
 class ItemSlot(Slot):
-    DEFAULT_CSS = """ItemSlot {
-        width: 1fr;
-        height: 1fr;
-        align: center middle;
-        content-align: center middle;
-        background: #ba9f68;
-        border:outer #6a4f32;
-        border-subtitle-background:#6a4f32;
-
-    }"""
-
     def __init__(self, id: str | None = None) -> None:
         super().__init__(id)
 
@@ -131,17 +122,6 @@ class ItemSlot(Slot):
 
 class EquipSlot(Slot):
     empty: bool = True
-
-    DEFAULT_CSS = """EquipSlot {
-        width: 1fr;
-        height: 1fr;
-        align: center middle;
-        content-align: center middle;
-        background:  #6b6c6f;
-        border:outer #474748;
-        border-subtitle-background:#474748;
-
-    }"""
 
     def __init__(
         self,
