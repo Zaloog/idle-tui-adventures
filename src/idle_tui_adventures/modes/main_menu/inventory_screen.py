@@ -62,6 +62,12 @@ class InventoryEquipScreen(ModalScreen):
             initial_slot_widget.remove_item()
             target_slot_widget.place_item(item=ItemIcon(target_item))
 
+            if target_slot_widget.id.startswith("equip"):
+                self.app.character.equip_item(
+                    item=target_item, database=self.app.cfg.database_path
+                )
+                self.notify(message=f"Equipped {target_item.name}")
+
     def on_screen_resume(self):
         self.query_one(Inventory).update_inventory()
         self.query_one(MenuIconsRow).focus()

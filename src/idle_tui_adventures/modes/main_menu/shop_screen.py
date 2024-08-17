@@ -1,3 +1,4 @@
+from math import prod
 from typing import Iterable, TYPE_CHECKING
 
 if TYPE_CHECKING:
@@ -35,8 +36,8 @@ class ShopScreen(ModalScreen):
         return super()._on_mount(event)
 
     @on(Button.Pressed)
-    def pull_item(self, event: Button.Pressed):
-        if self.app.character.inventory_items == INVENTORY_SIZE:
+    async def pull_item(self, event: Button.Pressed):
+        if len(self.app.character.inventory_items) == prod(INVENTORY_SIZE):
             self.notify(
                 title="Inventory Full",
                 message="Make sure you have enough space before pulling new items",
@@ -51,7 +52,7 @@ class ShopScreen(ModalScreen):
             current_lvl=self.app.character.level,
             database=self.app.cfg.database_path,
         )
-        self.query_one(Inventory).update_inventory()
+        await self.query_one(Inventory).update_inventory()
 
     @on(MouseDown)
     def select_new_item_position(self, event: MouseDown):

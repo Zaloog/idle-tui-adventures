@@ -46,8 +46,8 @@ class Inventory(Grid):
         for i, item in enumerate(self.app.character.inventory_items):
             self.query_one(f"#slot_{i}", Slot).place_item(ItemIcon(item=item))
 
-    def update_inventory(self):
-        self.recompose()
+    async def update_inventory(self):
+        await self.recompose()
         self.app.character.get_items_from_db(database=self.app.cfg.database_path)
         for i, item in enumerate(self.app.character.inventory_items):
             self.query_one(f"#slot_{i}", Slot).place_item(ItemIcon(item=item))
@@ -63,15 +63,15 @@ class Equipment(Grid):
 
     def compose(self) -> Iterable[Widget]:
         with Vertical():
-            yield EquipSlot(id="slot_ring1", category="Ring")
-            yield EquipSlot(id="slot_weapon1", category="Weapon")
+            yield EquipSlot(id="equipslot_ring1", category="Ring")
+            yield EquipSlot(id="equipslot_weapon1", category="Weapon")
         with Vertical():
-            yield EquipSlot(id="slot_helmet", category="Helmet")
-            yield EquipSlot(id="slot_armor", category="Armor")
-            yield EquipSlot(id="slot_boots", category="Boots")
+            yield EquipSlot(id="equipslot_helmet", category="Helmet")
+            yield EquipSlot(id="equipslot_armor", category="Armor")
+            yield EquipSlot(id="equipslot_boots", category="Boots")
         with Vertical():
-            yield EquipSlot(id="slot_ring2", category="Ring")
-            yield EquipSlot(id="slot_weapon2", category="Weapon")
+            yield EquipSlot(id="equipslot_ring2", category="Ring")
+            yield EquipSlot(id="equipslot_weapon2", category="Weapon")
 
         return super().compose()
 

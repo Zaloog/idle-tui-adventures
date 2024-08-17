@@ -10,6 +10,7 @@ from idle_tui_adventures.database.db_transactions import (
     update_level_db,
     gain_unassigned_stats_db,
     alocate_new_stats_db,
+    update_equip_status_item_db,
 )
 
 
@@ -93,3 +94,9 @@ class Character:
         self.inventory_items = [
             Item(**item) for item in all_items if not item["equipped"]
         ]
+
+    def equip_item(self, item: Item, database: Path):
+        update_equip_status_item_db(
+            item_id=item.item_id, equipped=True, database=database
+        )
+        self.get_items_from_db(database=database)

@@ -304,3 +304,22 @@ def create_initial_gamestate(character_id: int, database: Path = DB_FULL_PATH):
             elif e.sqlite_errorcode == sqlite3.SQLITE_CONSTRAINT_UNIQUE:
                 return "Iterm Insertion Error"
             return e.sqlite_errorname
+
+
+def update_equip_status_item_db(
+    item_id: int, equipped: bool, database: Path = DB_FULL_PATH
+) -> int | str:
+    equip_dict = {"item_id": item_id, "equipped": equipped}
+    transaction_str = """
+    UPDATE items
+    SET equipped = :equipped
+    WHERE item_id = :item_id
+    """
+    with create_connection(database=database) as con:
+        con.row_factory = sqlite3.Row
+        try:
+            con.execute(transaction_str, equip_dict)
+            return 0
+        except sqlite3.Error as e:
+            print(e.sqlite_errorname)
+            return e.sqlite_errorname
