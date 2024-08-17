@@ -1,4 +1,7 @@
-from typing import Iterable
+from typing import Iterable, TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from idle_tui_adventures.app import IdleAdventure
 
 from textual import on
 from textual.screen import ModalScreen
@@ -16,6 +19,7 @@ from idle_tui_adventures.widgets.icon_widgets import MenuIcon
 
 
 class CharacterCreation(ModalScreen):
+    app: "IdleAdventure"
     name: str = "CharacterCreation"
 
     BINDINGS = [("escape", "app.pop_screen")]
@@ -58,7 +62,11 @@ class CharacterCreation(ModalScreen):
             "profession": profession,
             **stats,
         }
-        if (msg := create_new_character_db(**char_dict)) == 0:
+        if (
+            msg := create_new_character_db(
+                **char_dict, database=self.app.cfg.database_path
+            )
+        ) == 0:
             self.notify(
                 title="Character Creation Successful",
                 message=f"[blue]{name}[/], the [blue]{profession}[/] is ready for Adventures",

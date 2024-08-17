@@ -94,21 +94,3 @@ def get_items_for_character(
         except sqlite3.Error as e:
             print(e)
             return []
-
-
-def get_all_items(database: Path = DB_FULL_PATH) -> list[sqlite3.Row]:
-    query_str = """
-    SELECT *
-    FROM items
-    """
-
-    items = []
-    with create_connection(database=database) as con:
-        con.row_factory = sqlite3.Row
-        try:
-            for row in con.execute(query_str).fetchall():
-                items.append(row)
-            return items
-        except sqlite3.Error as e:
-            print(e)
-            return items

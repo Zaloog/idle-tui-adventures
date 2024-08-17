@@ -35,7 +35,8 @@ class CharacterSelection(ModalScreen):
         with HorizontalScroll():
             for char_data in self.characters:
                 stage_data = get_stages_for_character(
-                    character_id=dict(char_data)["character_id"]
+                    character_id=dict(char_data)["character_id"],
+                    database=self.app.cfg.database_path,
                 )
                 yield CharacterPreview(character_data=char_data, stage_data=stage_data)
         yield Button("Start Adventure", id="btn_start_adventure")

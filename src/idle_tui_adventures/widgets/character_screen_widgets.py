@@ -122,7 +122,9 @@ class CharacterInterface(Vertical):
 
         self.unassigned_stat_points -= self.spent_stat_points
         self.spent_stat_points = 0
-        self.app.character.update_stats(change_stat_dict=self.spent_stat_dict)
+        self.app.character.update_stats(
+            change_stat_dict=self.spent_stat_dict, database=self.app.cfg.database_path
+        )
         self.spent_stat_dict = {stat: 0 for stat in self.spent_stat_dict}
         self.mutate_reactive(CharacterInterface.spent_stat_dict)
 

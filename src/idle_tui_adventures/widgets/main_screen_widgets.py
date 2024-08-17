@@ -52,12 +52,14 @@ class CharacterProgressbar(ProgressBar):
     def make_progress(self):
         exp_amount = 10
         self.update(advance=exp_amount)
-        self.app.character.collect_exp(exp_amount=exp_amount)
+        self.app.character.collect_exp(
+            exp_amount=exp_amount, database=self.app.cfg.database_path
+        )
         if self.percentage == 1:
             self.advance_level()
 
     def advance_level(self):
-        self.app.character.level_up()
+        self.app.character.level_up(database=self.app.cfg.database_path)
         self.notify(
             title="Level Up",
             message=f"{self.app.character.name} reached level [blue]{self.app.character.level}[/]",
@@ -184,6 +186,7 @@ class StageDisplay(Vertical):
             update_major_stage_db(
                 gamestate_id=self.app.gamestate.gamestate_id,
                 major_stage=self.app.gamestate.major_stage,
+                database=self.app.cfg.database_path,
             )
         else:
             self.app.gamestate.minor_stage += 1
@@ -193,6 +196,7 @@ class StageDisplay(Vertical):
         update_minor_stage_db(
             gamestate_id=self.app.gamestate.gamestate_id,
             minor_stage=self.app.gamestate.minor_stage,
+            database=self.app.cfg.database_path,
         )
 
 

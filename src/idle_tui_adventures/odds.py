@@ -1,4 +1,5 @@
 import random
+from pathlib import Path
 from typing import Literal, get_args, Any
 from collections import Counter
 
@@ -120,7 +121,7 @@ def get_random_base_damage(weapon_lvl: int) -> int:
 
 
 def create_new_equipment(
-    pull_variant: PULL_VARIANTS_LITERAL, owned_by: int, current_lvl: int
+    pull_variant: PULL_VARIANTS_LITERAL, owned_by: int, current_lvl: int, database: Path
 ) -> None:
     category, adjective = get_random_equipment_name()
     level_needed = get_random_level_needed(current_lvl=current_lvl)
@@ -137,4 +138,5 @@ def create_new_equipment(
         dexterity=1,
         luck=1,
         owned_by=owned_by,
+        database=database,
     )

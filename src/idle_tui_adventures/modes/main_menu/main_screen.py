@@ -39,7 +39,10 @@ class MainScreen(Screen):
     @on(MonsterPanel.MonsterDefeated)
     def advance_stage(self):
         self.monster_killed += 1
-        update_monsters_killed_db(gamestate_id=self.app.gamestate.gamestate_id)
+        update_monsters_killed_db(
+            gamestate_id=self.app.gamestate.gamestate_id,
+            database=self.app.cfg.database_path,
+        )
         if self.monster_killed == 5:
             self.monster_killed = 0
             self.query_one(MonsterPanel).refresh(recompose=True, repaint=False)

@@ -42,6 +42,7 @@ class ShopScreen(ModalScreen):
             pull_variant=rarity,
             owned_by=self.app.character.character_id,
             current_lvl=self.app.character.level,
+            database=self.app.cfg.database_path,
         )
         self.query_one(Inventory).update_inventory()
 

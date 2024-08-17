@@ -49,7 +49,7 @@ class Inventory(Grid):
 
     def update_inventory(self):
         self.recompose()
-        self.app.character.get_items_from_db()
+        self.app.character.get_items_from_db(database=self.app.cfg.database_path)
         for i, item in enumerate(self.app.character.inventory_items):
             self.query_one(f"#slot_{i}", Slot).place_item(ItemIcon(item=item))
 

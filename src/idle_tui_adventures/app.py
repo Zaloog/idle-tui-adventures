@@ -51,7 +51,9 @@ class IdleAdventure(App[None]):
             self.switch_mode(mode="Start")
 
     def load_active_character(self):
-        db_entry = get_character_by_id(character_id=self.cfg.active_character_id)
+        db_entry = get_character_by_id(
+            character_id=self.cfg.active_character_id, database=self.cfg.database_path
+        )
         if db_entry:
             info_txt = f'Name:\t\t[blue]{db_entry['name']}[/]\n'
             info_txt += f'Level:\t\t[blue]{db_entry['level']}[/]\n'
@@ -59,6 +61,7 @@ class IdleAdventure(App[None]):
             self.notify(title="Character Active", message=info_txt, timeout=1.5)
             self.character = Character(**db_entry)
 
+            self.character.get_items_from_db(database=self.cfg.database_path)
             self.load_game_state()
         else:
             self.notify(
@@ -72,12 +75,18 @@ class IdleAdventure(App[None]):
 
     def load_game_state(self):
         if gamestate := get_gamestate_for_character(
-            character_id=self.character.character_id
+            character_id=self.character.character_id, database=self.cfg.database_path
         ):
             self.gamestate = GameState(**gamestate)
             # self.notify(title="Gamestate Found", message=f"{self.gamestate}")
         else:
-            create_initial_gamestate(character_id=self.character.character_id)
+            create_initial_gamestate(
+                character_id=self.character.character_id,
+                database=self.cfg.database_path,
+            )
             self.gamestate = GameState(
-                **get_gamestate_for_character(character_id=self.character.character_id)
+                **get_gamestate_for_character(
+                    character_id=self.character.character_id,
+                    database=self.cfg.database_path,
+                )
             )
