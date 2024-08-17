@@ -35,7 +35,7 @@ def init_new_db(database: Path = DB_FULL_PATH):
     item_db_creation_str = """
     CREATE TABLE IF NOT EXISTS items (
     item_id INTEGER PRIMARY KEY,
-    name TEXT UNIQUE NOT NULL,
+    name TEXT NOT NULL,
     rarity TEXT NOT NULL,
     category TEXT NOT NULL,
     level_needed INTEGER NOT NULL,

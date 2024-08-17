@@ -120,17 +120,28 @@ def get_random_base_damage(weapon_lvl: int) -> int:
     )
 
 
+def get_category(equip_type: NAME_EQUIPMENT_OPTIONS_LITERAL):
+    if equip_type in [
+        "Axe",
+        "Scythe",
+        "Shovel",
+        "Wrench",
+    ]:
+        return "Weapon"
+    return equip_type
+
+
 def create_new_equipment(
     pull_variant: PULL_VARIANTS_LITERAL, owned_by: int, current_lvl: int, database: Path
 ) -> None:
-    category, adjective = get_random_equipment_name()
+    equip_type, adjective = get_random_equipment_name()
     level_needed = get_random_level_needed(current_lvl=current_lvl)
 
     create_new_item_db(
-        name=f"{category} of {adjective}",
+        name=f"{equip_type} of {adjective}",
         level_needed=level_needed,
         rarity=get_random_rarity(pull_variant=pull_variant),
-        category=category,
+        category=get_category(equip_type=equip_type),
         damage=get_random_base_damage(weapon_lvl=level_needed),
         attack_speed=1.00,
         strength=1,
