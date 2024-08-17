@@ -75,8 +75,16 @@ class Equipment(Grid):
     # Change Layout
     # query items
     # place items
+
     def compose(self) -> Iterable[Widget]:
         for i in range(prod(INVENTORY_SIZE)):
+            # Helmet
+            # Armor
+            # Boots
+            # Weapon 1
+            # Weapon 2
+            # Ring 1
+            # Ring 2
             yield EquipSlot(id=f"slot_{i}", category="Weapon")
 
         return super().compose()

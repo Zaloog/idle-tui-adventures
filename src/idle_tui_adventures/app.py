@@ -9,6 +9,7 @@ from idle_tui_adventures.database.db_queries import (
     get_gamestate_for_character,
 )
 from idle_tui_adventures.database.db_transactions import create_initial_gamestate
+from idle_tui_adventures.database.db_utils import init_new_db
 from idle_tui_adventures.config import IdleTuiConfig
 from idle_tui_adventures.modes.start_menu.start_screen import StartScreen
 from idle_tui_adventures.modes.main_menu.main_screen import MainScreen
@@ -40,6 +41,7 @@ class IdleAdventure(App[None]):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.cfg = IdleTuiConfig()
+        init_new_db(database=self.cfg.database_path)
 
     def on_mount(self):
         self.load_active_character()
