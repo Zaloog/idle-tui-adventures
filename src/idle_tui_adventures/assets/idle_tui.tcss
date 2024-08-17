@@ -319,3 +319,33 @@ LootBoxRow {
         }
     }
 }
+
+Equipment {
+    layout:grid;
+    grid-size:3 3;
+    grid-columns: 1fr;
+    grid-rows: 1fr;
+
+    #slot_helmet {
+        offset: 100% 0%;
+    }
+    #slot_armor {
+        offset: 0% 100%;
+    }
+    #slot_boots {
+        offset: -100% 200%;
+    }
+    #slot_weapon1 {
+        offset: 0% 50%;
+    }
+    #slot_weapon2 {
+        offset: 100% 50%;
+    }
+    #slot_ring1 {
+        offset: -200% -50%;
+    }
+    #slot_ring2 {
+        offset: 200% -150%;
+    }
+
+}

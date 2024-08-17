@@ -57,37 +57,26 @@ class Inventory(Grid):
 class Equipment(Grid):
     equipment_dict: dict
 
-    DEFAULT_CSS = (
-        """
-    Equipment {
-        grid-size: %d %d;
-
-        ItemSlot {
-            width:1fr;
-            height:1fr;
-        }
-    }
-    """
-        % INVENTORY_SIZE
-    )
-
     # On Mount?
     # Change Layout
     # query items
     # place items
 
     def compose(self) -> Iterable[Widget]:
-        for i in range(prod(INVENTORY_SIZE)):
-            # Helmet
-            # Armor
-            # Boots
-            # Weapon 1
-            # Weapon 2
-            # Ring 1
-            # Ring 2
-            yield EquipSlot(id=f"slot_{i}", category="Weapon")
+        yield EquipSlot(id="slot_helmet", category="Helmet")
+        yield EquipSlot(id="slot_armor", category="Armor")
+        yield EquipSlot(id="slot_boots", category="Boots")
+        yield EquipSlot(id="slot_weapon1", category="Weapon")
+        yield EquipSlot(id="slot_weapon2", category="Weapon")
+        yield EquipSlot(id="slot_ring1", category="Ring")
+        yield EquipSlot(id="slot_ring2", category="Ring")
 
         return super().compose()
+
+    def _on_mount(self, event: Mount) -> None:
+        for slot in self.query(EquipSlot):
+            slot.update(slot.category)
+        return super()._on_mount(event)
 
 
 class Slot(Static):
