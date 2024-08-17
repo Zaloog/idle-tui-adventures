@@ -49,11 +49,11 @@ class Inventory(Grid):
     async def update_inventory(self):
         await self.recompose()
         self.app.character.get_items_from_db(database=self.app.cfg.database_path)
-        for i, item in enumerate(self.app.character.inventory_items):
-            self.query_one(f"#slot_{i}", Slot).place_item(ItemIcon(item=item))
+        self.fill_inventory()
 
 
 class Equipment(Grid):
+    app: "IdleAdventure"
     equipment_dict: dict
 
     # On Mount?
@@ -78,7 +78,37 @@ class Equipment(Grid):
     def _on_mount(self, event: Mount) -> None:
         for slot in self.query(EquipSlot):
             slot.update(slot.category)
+        self.fill_equipment()
         return super()._on_mount(event)
+
+    def fill_equipment(self):
+        weapons = [
+            item
+            for item in self.app.character.equipped_items
+            if item.category == "Weapon"
+        ]
+        for i, weapon in enumerate(weapons, start=1):
+            self.query_one(f"#equipslot_weapon{i}", Slot).place_item(
+                ItemIcon(item=weapon)
+            )
+        rings = [
+            item
+            for item in self.app.character.equipped_items
+            if item.category == "Ring"
+        ]
+        for i, ring in enumerate(rings, start=1):
+            self.query_one(f"#equipslot_ring{i}", Slot).place_item(ItemIcon(item=ring))
+
+        for item in self.app.character.equipped_items:
+            if item.category not in ["Weapon", "Ring"]:
+                self.query_one(f"#equipslot_{item.category.lower()}", Slot).place_item(
+                    ItemIcon(item=item)
+                )
+
+    async def update_equipment(self):
+        await self.recompose()
+        self.app.character.get_items_from_db(database=self.app.cfg.database_path)
+        self.fill_equipment()
 
 
 class Slot(Static):

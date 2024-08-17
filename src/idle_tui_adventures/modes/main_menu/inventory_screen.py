@@ -4,7 +4,7 @@ if TYPE_CHECKING:
     from idle_tui_adventures.app import IdleAdventure
 
 from textual import on
-from textual.events import Mount, MouseDown
+from textual.events import Mount, MouseDown, ScreenResume
 from textual.geometry import Offset
 from textual.widget import Widget
 from textual.screen import ModalScreen
@@ -68,6 +68,7 @@ class InventoryEquipScreen(ModalScreen):
                 )
                 self.notify(message=f"Equipped {target_item.name}")
 
-    def on_screen_resume(self):
-        self.query_one(Inventory).update_inventory()
+    @on(ScreenResume)
+    async def update_inventory_view(self):
+        await self.query_one(Inventory).update_inventory()
         self.query_one(MenuIconsRow).focus()
