@@ -19,7 +19,7 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project.scripts]
-idle = "idle_tui_adventures.__main__:run"
+idle-tui-adventures = "idle_tui_adventures.__main__:run"
 
 [tool.rye]
 managed = true
